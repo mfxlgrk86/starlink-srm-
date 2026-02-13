@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ordersAPI, suppliersAPI, materialsAPI } from '../services/api';
+import { ordersAPI, suppliersAPI } from '../../services/api';
 import { useAuthStore } from '../stores/authStore';
 
 const Orders = () => {

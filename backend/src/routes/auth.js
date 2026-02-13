@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const db = new Database(path.join(__dirname, '..', 'database', 'starlink.db'));
+const db = new Database(path.join(__dirname, '..', '..', 'database', 'starlink.db'));
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'starlink-secret-key';

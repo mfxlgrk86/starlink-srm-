@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { reconciliationsAPI, invoicesAPI } from '../services/api';
-import { useAuthStore } from '../stores/authStore';
+import { reconciliationsAPI, invoicesAPI } from '../../services/api';
+import { useAuthStore } from '../../stores/authStore';
 
 const Finance = () => {
   const { user } = useAuthStore();
