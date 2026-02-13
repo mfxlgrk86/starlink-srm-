@@ -1,0 +1,465 @@
+# 璟岩信息·星穹 (StarLink) SRM 产品需求文档 (PRD)
+
+## 文档版本: v2.0.0
+
+## 产品名称: 星穹 StarLink SRM (璟岩信息定制版)
+
+## 产品定位: 面向中小型制造业的轻量化、智能化供应链协同 SaaS 平台
+
+---
+
+## 1. 文档概述
+
+### 1.1 背景与目的
+解决中小型制造业（采购团队<10人，供应商30-50家）的供应链协同痛点，构建可实际运行的 SaaS 系统。
+
+### 1.2 技术栈约束
+
+| 层级 | 技术选型 | 说明 |
+|------|----------|------|
+| 前端 | React 18 + Vite + Tailwind CSS | Apple Design 风格 |
+| 后端 | Node.js + Express | RESTful API |
+| 数据库 | SQLite (开发) / PostgreSQL (生产) | 轻量化起步 |
+| AI | MiniMax M2.1 API | 文本生成、数据提取 |
+| 认证 | JWT + 微信 OAuth | 双端认证 |
+| 部署 | Docker + Nginx | 容器化部署 |
+
+---
+
+## 2. 用户角色
+
+| 角色 | 端口 | 核心职责 |
+|------|------|----------|
+| 采购经理 | PC 端 (Web) | 供应商管理、订单下达、财务对账 |
+| 供应商 | 移动端 (H5) | 接单、发货、上传发票 |
+| 财务/老板 | PC 端 (Web) | 报表查看、审批付款 |
+
+---
+
+## 3. 系统架构
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        前端层                                │
+├─────────────────────────┬───────────────────────────────────┤
+│   PC 管理端 (React)     │      移动协同端 (H5/React)         │
+│   - 工作台              │      - 订单通知                    │
+│   - 订单管理            │      - 接单/发货                   │
+│   - 供应商管理          │      - 发票上传                    │
+│   - 财务对账            │      - 对账确认                    │
+└─────────────────────────┴───────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      API 网关层 (Express)                    │
+│   /api/v1/auth    /api/v1/orders    /api/v1/suppliers       │
+│   /api/v1/sourcing    /api/v1/finance    /api/v1/ai         │
+└─────────────────────────────────────────────────────────────┘
+                              │
+          ┌───────────────────┼───────────────────┐
+          ▼                   ▼                   ▼
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│   数据库层       │ │    AI 服务层    │ │   微信服务层    │
+│   SQLite/PG     │ │   MiniMax API   │ │   模板消息      │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
+```
+
+---
+
+## 4. 数据库设计
+
+### 4.1 核心表结构
+
+```sql
+-- 用户表
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'purchaser', 'supplier', 'finance') NOT NULL,
+    supplier_id INTEGER NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 供应商表
+CREATE TABLE suppliers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(100) NOT NULL,
+    contact_name VARCHAR(50),
+    contact_phone VARCHAR(20),
+    address TEXT,
+    status ENUM('active', 'blocked', 'pending') DEFAULT 'active',
+    rating DECIMAL(2,1) DEFAULT 5.0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 物料表
+CREATE TABLE materials (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    specification TEXT,
+    unit VARCHAR(20),
+    category VARCHAR(50)
+);
+
+-- 订单表
+CREATE TABLE orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_no VARCHAR(50) UNIQUE NOT NULL,
+    supplier_id INTEGER NOT NULL,
+    material_id INTEGER NOT NULL,
+    quantity DECIMAL(10,2) NOT NULL,
+    unit_price DECIMAL(10,2),
+    total_amount DECIMAL(12,2),
+    delivery_date DATE,
+    status ENUM('pending', 'confirmed', 'shipped', 'received', 'completed', 'cancelled') DEFAULT 'pending',
+    tracking_no VARCHAR(100),
+    notes TEXT,
+    created_by INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id),
+    FOREIGN KEY (material_id) REFERENCES materials(id)
+);
+
+-- 订单日志表
+CREATE TABLE order_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    old_status VARCHAR(20),
+    new_status VARCHAR(20),
+    operator_id INTEGER,
+    remark TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
+-- 询价表
+CREATE TABLE inquiries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    inquiry_no VARCHAR(50) UNIQUE NOT NULL,
+    title VARCHAR(200),
+    description TEXT,
+    status ENUM('draft', 'published', 'closed') DEFAULT 'draft',
+    deadline DATE,
+    created_by INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 报价表
+CREATE TABLE quotations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    inquiry_id INTEGER NOT NULL,
+    supplier_id INTEGER NOT NULL,
+    material_id INTEGER,
+    quantity DECIMAL(10,2),
+    unit_price DECIMAL(10,2),
+    delivery_days INTEGER,
+    valid_until DATE,
+    status ENUM('pending', 'accepted', 'rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (inquiry_id) REFERENCES inquiries(id),
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+);
+
+-- 对账单表
+CREATE TABLE reconciliations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reconciliation_no VARCHAR(50) UNIQUE NOT NULL,
+    supplier_id INTEGER NOT NULL,
+    period_start DATE,
+    period_end DATE,
+    total_amount DECIMAL(12,2),
+    status ENUM('draft', 'sent', 'confirmed', 'paid') DEFAULT 'draft',
+    ai_audit_result TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+);
+
+-- 发票表
+CREATE TABLE invoices (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reconciliation_id INTEGER,
+    supplier_id INTEGER NOT NULL,
+    invoice_no VARCHAR(50),
+    invoice_date DATE,
+    amount DECIMAL(12,2),
+    tax_amount DECIMAL(12,2),
+    image_url TEXT,
+    ocr_result TEXT,
+    status ENUM('pending', 'verified', 'rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (reconciliation_id) REFERENCES reconciliations(id)
+);
+```
+
+---
+
+## 5. API 接口设计
+
+### 5.1 认证模块
+
+```
+POST   /api/v1/auth/login          # 登录
+POST   /api/v1/auth/logout         # 登出
+GET    /api/v1/auth/profile        # 获取当前用户信息
+POST   /api/v1/auth/wechat-login   # 微信登录(供应商)
+```
+
+### 5.2 订单模块
+
+```
+GET    /api/v1/orders              # 订单列表(支持筛选)
+GET    /api/v1/orders/:id          # 订单详情
+POST   /api/v1/orders              # 创建订单
+PUT    /api/v1/orders/:id          # 更新订单
+POST   /api/v1/orders/:id/confirm  # 供应商确认接单
+POST   /api/v1/orders/:id/ship     # 供应商发货
+POST   /api/v1/orders/:id/receive  # 采购方确认收货
+POST   /api/v1/orders/import       # Excel导入订单
+```
+
+### 5.3 供应商模块
+
+```
+GET    /api/v1/suppliers           # 供应商列表
+GET    /api/v1/suppliers/:id       # 供应商详情
+POST   /api/v1/suppliers           # 新增供应商
+PUT    /api/v1/suppliers/:id       # 更新供应商
+PUT    /api/v1/suppliers/:id/block # 拉黑供应商
+PUT    /api/v1/suppliers/:id/activate # 恢复供应商
+```
+
+### 5.4 寻源模块
+
+```
+GET    /api/v1/inquiries           # 询价列表
+POST   /api/v1/inquiries           # 发布询价
+GET    /api/v1/inquiries/:id/quotations # 获取报价
+POST   /api/v1/quotations          # 供应商报价
+POST   /api/v1/quotations/:id/accept # 采纳报价转PO
+```
+
+### 5.5 财务模块
+
+```
+GET    /api/v1/reconciliations     # 对账单列表
+POST   /api/v1/reconciliations     # 生成对账单
+POST   /api/v1/reconciliations/:id/confirm # 确认对账单
+POST   /api/v1/invoices            # 上传发票
+POST   /api/v1/invoices/:id/verify # 验证发票
+```
+
+### 5.6 AI 模块
+
+```
+POST   /api/v1/ai/parse-order      # AI解析自然语言建单
+POST   /api/v1/ai/polish-inquiry   # AI润色询价需求
+POST   /api/v1/ai/audit-reconciliation # AI对账稽核
+POST   /api/v1/ai/ocr-invoice      # AI发票识别
+```
+
+---
+
+## 6. AI 功能实现
+
+### 6.1 AI 建单 (parse-order)
+
+**输入:** 自然语言描述
+```
+"明天急需华威机械的精密轴承500个"
+```
+
+**输出:** 结构化数据
+```json
+{
+  "supplier_name": "华威机械",
+  "material_name": "精密轴承",
+  "quantity": 500,
+  "delivery_date": "2024-05-25",
+  "confidence": 0.95
+}
+```
+
+**实现:**
+```javascript
+async function parseOrderWithAI(text) {
+  const prompt = `从以下采购需求中提取信息，返回JSON格式：
+需求：${text}
+返回格式：{"supplier_name": "", "material_name": "", "quantity": 0, "delivery_date": ""}`;
+
+  const response = await minimaxClient.chat(prompt);
+  return JSON.parse(response);
+}
+```
+
+### 6.2 AI 对账稽核 (audit-reconciliation)
+
+**输入:** 订单数据、入库数据、发票数据
+**输出:** 稽核报告
+
+```json
+{
+  "status": "warning",
+  "issues": [
+    {
+      "type": "quantity_mismatch",
+      "description": "订单数量1000，入库数量950，差异50件"
+    }
+  ],
+  "suggestion": "建议核实入库记录，确认是否有漏录入库"
+}
+```
+
+---
+
+## 7. 项目目录结构
+
+```
+starlink-srm/
+├── frontend/                    # 前端项目
+│   ├── src/
+│   │   ├── components/          # 通用组件
+│   │   │   ├── ui/              # 基础UI组件
+│   │   │   ├── layout/          # 布局组件
+│   │   │   └── business/        # 业务组件
+│   │   ├── pages/               # 页面
+│   │   │   ├── dashboard/       # 工作台
+│   │   │   ├── orders/          # 订单管理
+│   │   │   ├── suppliers/       # 供应商管理
+│   │   │   ├── sourcing/        # 寻源中心
+│   │   │   └── finance/         # 财务协同
+│   │   ├── hooks/               # 自定义Hooks
+│   │   ├── services/            # API服务
+│   │   ├── stores/              # 状态管理
+│   │   └── utils/               # 工具函数
+│   ├── public/
+│   ├── index.html
+│   ├── vite.config.js
+│   └── tailwind.config.js
+│
+├── backend/                     # 后端项目
+│   ├── src/
+│   │   ├── controllers/         # 控制器
+│   │   ├── services/            # 业务逻辑
+│   │   ├── models/              # 数据模型
+│   │   ├── routes/              # 路由定义
+│   │   ├── middlewares/         # 中间件
+│   │   ├── utils/               # 工具函数
+│   │   └── ai/                  # AI服务
+│   │       └── minimax.js       # MiniMax集成
+│   ├── database/
+│   │   ├── migrations/          # 数据库迁移
+│   │   └── seeds/              # 种子数据
+│   ├── config/
+│   └── server.js
+│
+├── docker-compose.yml
+├── Dockerfile
+└── README.md
+```
+
+---
+
+## 8. 分阶段开发计划
+
+### Phase 1: 基础框架 (Week 1-2)
+- [ ] 项目初始化 (前端 + 后端)
+- [ ] 数据库设计与初始化
+- [ ] 用户认证系统
+- [ ] 基础UI组件库
+
+### Phase 2: 核心功能 (Week 3-4)
+- [ ] 供应商管理 CRUD
+- [ ] 订单管理 CRUD
+- [ ] 订单状态流转
+- [ ] 微信H5适配
+
+### Phase 3: AI 功能 (Week 5-6)
+- [ ] MiniMax API 集成
+- [ ] AI 自然语言建单
+- [ ] AI 询价润色
+- [ ] AI 对账稽核
+
+### Phase 4: 高级功能 (Week 7-8)
+- [ ] 询价发布与报价
+- [ ] 财务对账流程
+- [ ] 发票上传与OCR
+- [ ] 数据报表
+
+### Phase 5: 部署上线 (Week 9-10)
+- [ ] Docker 容器化
+- [ ] Nginx 配置
+- [ ] 微信服务号集成
+- [ ] 生产环境部署
+
+---
+
+## 9. 环境变量配置
+
+```env
+# 后端配置
+NODE_ENV=development
+PORT=3001
+
+# 数据库
+DATABASE_URL=./database/starlink.db
+
+# JWT
+JWT_SECRET=your-jwt-secret-key
+JWT_EXPIRES_IN=7d
+
+# MiniMax AI
+MINIMAX_API_KEY=your-minimax-api-key
+MINIMAX_BASE_URL=https://api.minimax.chat/v1
+
+# 微信配置
+WECHAT_APP_ID=your-wechat-appid
+WECHAT_APP_SECRET=your-wechat-secret
+
+# 前端配置
+VITE_API_BASE_URL=http://localhost:3001/api/v1
+```
+
+---
+
+## 10. 快速启动命令
+
+```bash
+# 克隆项目
+git clone <repo-url>
+cd starlink-srm
+
+# 安装依赖
+cd frontend && npm install
+cd ../backend && npm install
+
+# 初始化数据库
+npm run db:init
+npm run db:seed
+
+# 启动开发服务器
+# 终端1: 后端
+cd backend && npm run dev
+
+# 终端2: 前端
+cd frontend && npm run dev
+
+# 访问
+# PC端: http://localhost:5173
+# 移动端: http://localhost:5173/mobile
+```
+
+---
+
+## 11. 默认测试账号
+
+| 角色 | 用户名 | 密码 |
+|------|--------|------|
+| 管理员 | admin | admin123 |
+| 采购员 | purchaser | purchase123 |
+| 供应商-华威机械 | huawei | huawei123 |
+| 供应商-立讯电子 | lixun | lixun123 |
+| 财务 | finance | finance123 |
