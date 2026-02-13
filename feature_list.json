@@ -332,7 +332,7 @@
       "Step 5: Click activate button",
       "Step 6: Verify supplier status changes to 'active'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -343,7 +343,7 @@
       "Step 3: Click inquiries tab",
       "Step 4: Verify inquiries list is displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -360,7 +360,7 @@
       "Step 9: Verify success message",
       "Step 10: Verify inquiry appears in list with 'draft' status"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -375,7 +375,7 @@
       "Step 7: Confirm publish",
       "Step 8: Verify inquiry status changes to 'published'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -388,7 +388,7 @@
       "Step 5: Click view quotations button",
       "Step 6: Verify quotations list is displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -406,7 +406,7 @@
       "Step 10: Verify success message",
       "Step 11: Verify quotation appears in list"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -420,7 +420,7 @@
       "Step 6: Verify new order is created",
       "Step 7: Verify quotation status changes to 'accepted'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -434,7 +434,7 @@
       "Step 6: Confirm rejection",
       "Step 7: Verify quotation status changes to 'rejected'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -445,7 +445,7 @@
       "Step 3: Click reconciliations tab",
       "Step 4: Verify reconciliations list is displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -461,7 +461,7 @@
       "Step 8: Click generate",
       "Step 9: Verify reconciliation is created with 'draft' status"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -473,7 +473,7 @@
       "Step 4: Click send to supplier button",
       "Step 5: Verify reconciliation status changes to 'sent'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -485,7 +485,7 @@
       "Step 4: Click confirm button",
       "Step 5: Verify reconciliation status changes to 'confirmed'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -497,7 +497,7 @@
       "Step 4: Click mark as paid button",
       "Step 5: Verify reconciliation status changes to 'paid'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -508,7 +508,7 @@
       "Step 3: Click invoices tab",
       "Step 4: Verify invoices list is displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -526,7 +526,7 @@
       "Step 10: Verify success message",
       "Step 11: Verify invoice appears in list with 'pending' status"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -539,7 +539,7 @@
       "Step 5: Click verify button",
       "Step 6: Verify invoice status changes to 'verified'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -554,7 +554,7 @@
       "Step 7: Confirm rejection",
       "Step 8: Verify invoice status changes to 'rejected'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
