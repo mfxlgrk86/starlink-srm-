@@ -10,7 +10,7 @@
       "Step 5: Verify redirect to dashboard",
       "Step 6: Verify user profile shows 'admin' role"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -23,7 +23,7 @@
       "Step 5: Verify redirect to dashboard",
       "Step 6: Verify user profile shows 'purchaser' role"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -36,7 +36,7 @@
       "Step 5: Verify redirect to dashboard",
       "Step 6: Verify user profile shows 'finance' role"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -49,7 +49,7 @@
       "Step 5: Verify error message is displayed",
       "Step 6: Verify user remains on login page"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -61,7 +61,7 @@
       "Step 4: Verify redirect to login page",
       "Step 5: Verify session is cleared"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -72,7 +72,7 @@
       "Step 3: Verify response includes username, role",
       "Step 4: Verify sensitive data is not exposed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -84,7 +84,7 @@
       "Step 4: Verify dashboard displays supplier count",
       "Step 5: Verify dashboard displays pending actions"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -96,7 +96,7 @@
       "Step 4: Verify pagination controls are visible",
       "Step 5: Verify order data includes order_no, supplier, status"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -108,7 +108,7 @@
       "Step 4: Select 'pending' status",
       "Step 5: Verify only pending orders are displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -120,7 +120,7 @@
       "Step 4: Click search button",
       "Step 5: Verify matching orders are displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -132,7 +132,7 @@
       "Step 4: Verify order details modal/page opens",
       "Step 5: Verify all order information is displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -150,7 +150,7 @@
       "Step 10: Verify success message",
       "Step 11: Verify new order appears in list"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -164,7 +164,7 @@
       "Step 6: Verify success message",
       "Step 7: Verify order is updated in list"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -177,7 +177,7 @@
       "Step 5: Confirm cancellation in dialog",
       "Step 6: Verify order status changes to 'cancelled'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -189,7 +189,7 @@
       "Step 4: Click confirm button on an order",
       "Step 5: Verify order status changes to 'confirmed'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -203,7 +203,7 @@
       "Step 6: Click confirm shipment",
       "Step 7: Verify order status changes to 'shipped'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -216,7 +216,7 @@
       "Step 5: Confirm receipt in dialog",
       "Step 6: Verify order status changes to 'received'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -228,7 +228,7 @@
       "Step 4: Click complete button",
       "Step 5: Verify order status changes to 'completed'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -239,7 +239,7 @@
       "Step 3: Verify suppliers list is displayed",
       "Step 4: Verify supplier data includes name, contact, status"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -251,7 +251,7 @@
       "Step 4: Click search button",
       "Step 5: Verify matching suppliers are displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -263,7 +263,7 @@
       "Step 4: Select 'active' status",
       "Step 5: Verify only active suppliers are displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -275,7 +275,7 @@
       "Step 4: Verify supplier details modal opens",
       "Step 5: Verify all supplier information is displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -292,7 +292,7 @@
       "Step 9: Verify success message",
       "Step 10: Verify new supplier appears in list"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -306,7 +306,7 @@
       "Step 6: Verify success message",
       "Step 7: Verify supplier is updated in list"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -319,7 +319,7 @@
       "Step 5: Confirm action in dialog",
       "Step 6: Verify supplier status changes to 'blocked'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -571,7 +571,7 @@
       "Step 9: Verify quantity is extracted",
       "Step 10: Verify delivery date is extracted"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -585,7 +585,7 @@
       "Step 6: Verify AI returns polished description",
       "Step 7: Verify description is more detailed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -598,7 +598,7 @@
       "Step 5: Verify AI returns audit result",
       "Step 6: Verify any issues are identified"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -614,7 +614,7 @@
       "Step 8: Verify amount is extracted",
       "Step 9: Verify date is extracted"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
