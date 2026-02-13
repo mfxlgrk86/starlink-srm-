@@ -1,0 +1,2409 @@
+[
+  {
+    "category": "functional",
+    "description": "User login with valid credentials as admin",
+    "steps": [
+      "Step 1: Navigate to login page at /login",
+      "Step 2: Enter username 'admin' in username field",
+      "Step 3: Enter password 'admin123' in password field",
+      "Step 4: Click login button",
+      "Step 5: Verify redirect to dashboard",
+      "Step 6: Verify user profile shows 'admin' role"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User login with valid credentials as purchaser",
+    "steps": [
+      "Step 1: Navigate to login page at /login",
+      "Step 2: Enter username 'purchaser' in username field",
+      " Enter password 'purchaseStep 3:123' in password field",
+      "Step 4: Click login button",
+      "Step 5: Verify redirect to dashboard",
+      "Step 6: Verify user profile shows 'purchaser' role"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User login with valid credentials as finance",
+    "steps": [
+      "Step 1: Navigate to login page at /login",
+      "Step 2: Enter username 'finance' in username field",
+      "Step 3: Enter password 'finance123' in password field",
+      "Step 4: Click login button",
+      "Step 5: Verify redirect to dashboard",
+      "Step 6: Verify user profile shows 'finance' role"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User login with invalid credentials",
+    "steps": [
+      "Step 1: Navigate to login page at /login",
+      "Step 2: Enter username 'admin' in username field",
+      "Step 3: Enter password 'wrongpassword' in password field",
+      "Step 4: Click login button",
+      "Step 5: Verify error message is displayed",
+      "Step 6: Verify user remains on login page"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User logout from dashboard",
+    "steps": [
+      "Step 1: Login as admin user",
+      "Step 2: Click user profile menu in header",
+      "Step 3: Click logout button",
+      "Step 4: Verify redirect to login page",
+      "Step 5: Verify session is cleared"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Get current user profile via API",
+    "steps": [
+      "Step 1: Login as admin user",
+      "Step 2: Navigate to profile page or access /api/v1/auth/profile",
+      "Step 3: Verify response includes username, role",
+      "Step 4: Verify sensitive data is not exposed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View dashboard statistics",
+    "steps": [
+      "Step 1: Login as admin user",
+      "Step 2: Navigate to dashboard page",
+      "Step 3: Verify dashboard displays order statistics",
+      "Step 4: Verify dashboard displays supplier count",
+      "Step 5: Verify dashboard displays pending actions"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View orders list with default pagination",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page /orders",
+      "Step 3: Verify orders list is displayed",
+      "Step 4: Verify pagination controls are visible",
+      "Step 5: Verify order data includes order_no, supplier, status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Filter orders by status",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Click status filter dropdown",
+      "Step 4: Select 'pending' status",
+      "Step 5: Verify only pending orders are displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search orders by order number",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Enter order number in search field",
+      "Step 4: Click search button",
+      "Step 5: Verify matching orders are displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View order details",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Click on an order row to view details",
+      "Step 4: Verify order details modal/page opens",
+      "Step 5: Verify all order information is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Create new order with all required fields",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Click 'Create Order' button",
+      "Step 4: Fill in supplier selection",
+      "Step 5: Fill in material selection",
+      "Step 6: Enter quantity",
+      "Step 7: Enter unit price",
+      "Step 8: Select delivery date",
+      "Step 9: Click submit button",
+      "Step 10: Verify success message",
+      "Step 11: Verify new order appears in list"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Update existing order",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Click edit button on an order",
+      "Step 4: Modify quantity field",
+      "Step 5: Click save button",
+      "Step 6: Verify success message",
+      "Step 7: Verify order is updated in list"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Cancel an order",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Select a pending order",
+      "Step 4: Click cancel button",
+      "Step 5: Confirm cancellation in dialog",
+      "Step 6: Verify order status changes to 'cancelled'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier confirms order (as supplier role)",
+    "steps": [
+      "Step 1: Login as supplier 'huawei'",
+      "Step 2: Navigate to orders page",
+      "Step 3: View pending orders",
+      "Step 4: Click confirm button on an order",
+      "Step 5: Verify order status changes to 'confirmed'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier ships order with tracking number",
+    "steps": [
+      "Step 1: Login as supplier 'huawei'",
+      "Step 2: Navigate to orders page",
+      "Step 3: View confirmed orders",
+      "Step 4: Click ship button",
+      "Step 5: Enter tracking number",
+      "Step 6: Click confirm shipment",
+      "Step 7: Verify order status changes to 'shipped'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Purchaser confirms goods receipt",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: View shipped orders",
+      "Step 4: Click receive button",
+      "Step 5: Confirm receipt in dialog",
+      "Step 6: Verify order status changes to 'received'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Complete order after receipt",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: View received orders",
+      "Step 4: Click complete button",
+      "Step 5: Verify order status changes to 'completed'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View suppliers list",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page /suppliers",
+      "Step 3: Verify suppliers list is displayed",
+      "Step 4: Verify supplier data includes name, contact, status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search suppliers by name",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page",
+      "Step 3: Enter supplier name in search field",
+      "Step 4: Click search button",
+      "Step 5: Verify matching suppliers are displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Filter suppliers by status",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page",
+      "Step 3: Click status filter dropdown",
+      "Step 4: Select 'active' status",
+      "Step 5: Verify only active suppliers are displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View supplier details",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page",
+      "Step 3: Click on a supplier row",
+      "Step 4: Verify supplier details modal opens",
+      "Step 5: Verify all supplier information is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Create new supplier",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page",
+      "Step 3: Click 'Add Supplier' button",
+      "Step 4: Enter supplier name",
+      "Step 5: Enter contact name",
+      "Step 6: Enter contact phone",
+      "Step 7: Enter address",
+      "Step 8: Click save button",
+      "Step 9: Verify success message",
+      "Step 10: Verify new supplier appears in list"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Update supplier information",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page",
+      "Step 3: Click edit button on a supplier",
+      "Step 4: Modify contact phone",
+      "Step 5: Click save button",
+      "Step 6: Verify success message",
+      "Step 7: Verify supplier is updated in list"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Block (deactivate) a supplier",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page",
+      "Step 3: Select an active supplier",
+      "Step 4: Click block button",
+      "Step 5: Confirm action in dialog",
+      "Step 6: Verify supplier status changes to 'blocked'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Activate a blocked supplier",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers page",
+      "Step 3: Filter by 'blocked' status",
+      "Step 4: Select a blocked supplier",
+      "Step 5: Click activate button",
+      "Step 6: Verify supplier status changes to 'active'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View inquiries list",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page /sourcing",
+      "Step 3: Click inquiries tab",
+      "Step 4: Verify inquiries list is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Create new inquiry (draft)",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: Click inquiries tab",
+      "Step 4: Click 'Create Inquiry' button",
+      "Step 5: Enter inquiry title",
+      "Step 6: Enter description",
+      "Step 7: Select deadline date",
+      "Step 8: Click save as draft",
+      "Step 9: Verify success message",
+      "Step 10: Verify inquiry appears in list with 'draft' status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Publish inquiry to suppliers",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: Click inquiries tab",
+      "Step 4: Select a draft inquiry",
+      "Step 5: Click publish button",
+      "Step 6: Select target suppliers",
+      "Step 7: Confirm publish",
+      "Step 8: Verify inquiry status changes to 'published'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View quotations for an inquiry",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: Click inquiries tab",
+      "Step 4: Select a published inquiry",
+      "Step 5: Click view quotations button",
+      "Step 6: Verify quotations list is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Submit quotation as supplier",
+    "steps": [
+      "Step 1: Login as supplier 'huawei'",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: View available inquiries",
+      "Step 4: Click on an inquiry",
+      "Step 5: Click submit quotation",
+      "Step 6: Enter unit price",
+      "Step 7: Enter delivery days",
+      "Step 8: Select valid until date",
+      "Step 9: Click submit",
+      "Step 10: Verify success message",
+      "Step 11: Verify quotation appears in list"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Accept quotation and convert to purchase order",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: View quotations for an inquiry",
+      "Step 4: Click accept on a quotation",
+      "Step 5: Confirm conversion to PO",
+      "Step 6: Verify new order is created",
+      "Step 7: Verify quotation status changes to 'accepted'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Reject quotation",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: View quotations for an inquiry",
+      "Step 4: Click reject on a quotation",
+      "Step 5: Enter rejection reason",
+      "Step 6: Confirm rejection",
+      "Step 7: Verify quotation status changes to 'rejected'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View reconciliations list",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page /finance",
+      "Step 3: Click reconciliations tab",
+      "Step 4: Verify reconciliations list is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Create reconciliation (draft)",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Click reconciliations tab",
+      "Step 4: Click 'Create Reconciliation' button",
+      "Step 5: Select supplier",
+      "Step 6: Select period start date",
+      "Step 7: Select period end date",
+      "Step 8: Click generate",
+      "Step 9: Verify reconciliation is created with 'draft' status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Send reconciliation to supplier",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Select a draft reconciliation",
+      "Step 4: Click send to supplier button",
+      "Step 5: Verify reconciliation status changes to 'sent'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier confirms reconciliation",
+    "steps": [
+      "Step 1: Login as supplier 'huawei'",
+      "Step 2: Navigate to finance page",
+      "Step 3: View received reconciliations",
+      "Step 4: Click confirm button",
+      "Step 5: Verify reconciliation status changes to 'confirmed'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mark reconciliation as paid",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Select a confirmed reconciliation",
+      "Step 4: Click mark as paid button",
+      "Step 5: Verify reconciliation status changes to 'paid'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View invoices list",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Click invoices tab",
+      "Step 4: Verify invoices list is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Upload invoice image",
+    "steps": [
+      "Step 1: Login as supplier 'huawei'",
+      "Step 2: Navigate to finance page",
+      "Step 3: Click invoices tab",
+      "Step 4: Click upload invoice button",
+      "Step 5: Select invoice image file",
+      "Step 6: Enter invoice number",
+      "Step 7: Enter invoice date",
+      "Step 8: Enter amount",
+      "Step 9: Click submit",
+      "Step 10: Verify success message",
+      "Step 11: Verify invoice appears in list with 'pending' status"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Verify invoice (manual verification)",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Click invoices tab",
+      "Step 4: Select a pending invoice",
+      "Step 5: Click verify button",
+      "Step 6: Verify invoice status changes to 'verified'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Reject invoice",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Click invoices tab",
+      "Step 4: Select a pending invoice",
+      "Step 5: Click reject button",
+      "Step 6: Enter rejection reason",
+      "Step 7: Confirm rejection",
+      "Step 8: Verify invoice status changes to 'rejected'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "AI parse order from natural language",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Click 'AI Create Order' button",
+      "Step 4: Enter natural language '明天急需华威机械的精密轴承500个'",
+      "Step 5: Click parse button",
+      "Step 6: Verify AI returns structured data",
+      "Step 7: Verify supplier is extracted",
+      "Step 8: Verify material is extracted",
+      "Step 9: Verify quantity is extracted",
+      "Step 10: Verify delivery date is extracted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "AI polish inquiry description",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: Create new inquiry",
+      "Step 4: Enter basic description",
+      "Step 5: Click 'AI Polish' button",
+      "Step 6: Verify AI returns polished description",
+      "Step 7: Verify description is more detailed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "AI audit reconciliation",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Select a reconciliation",
+      "Step 4: Click 'AI Audit' button",
+      "Step 5: Verify AI returns audit result",
+      "Step 6: Verify any issues are identified"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "AI OCR invoice recognition",
+    "steps": [
+      "Step 1: Login as supplier",
+      "Step 2: Navigate to finance page",
+      "Step 3: Click upload invoice",
+      "Step 4: Select invoice image",
+      "Step 5: Click 'Auto-fill' or OCR button",
+      "Step 6: Verify invoice fields are auto-populated",
+      "Step 7: Verify invoice number is extracted",
+      "Step 8: Verify amount is extracted",
+      "Step 9: Verify date is extracted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View materials list",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to materials page or access via orders",
+      "Step 3: Verify materials list is displayed",
+      "Step 4: Verify material data includes code, name, unit"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Create new material",
+    "steps": [
+      "Step 1: Login as admin",
+      "Step 2: Navigate to materials management",
+      "Step 3: Click 'Add Material' button",
+      "Step 4: Enter material code",
+      "Step 5: Enter material name",
+      "Step 6: Enter specification",
+      "Step 7: Enter unit",
+      "Step 8: Select category",
+      "Step 9: Click save",
+      "Step 10: Verify success message"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Update material information",
+    "steps": [
+      "Step 1: Login as admin",
+      "Step 2: Navigate to materials management",
+      "Step 3: Select a material",
+      "Step 4: Click edit button",
+      "Step 5: Modify specification",
+      "Step 6: Click save",
+      "Step 7: Verify material is updated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "View order logs/history",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Click on an order",
+      "Step 4: Click 'View History' or logs tab",
+      "Step 5: Verify order status change history is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Pagination navigation on orders page",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page with many orders",
+      "Step 3: Note current page number",
+      "Step 4: Click next page button",
+      "Step 5: Verify different orders are displayed",
+      "Step 6: Verify page number updates"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Sort orders by date",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders page",
+      "Step 3: Click date column header to sort",
+      "Step 4: Verify orders are sorted by date",
+      "Step 5: Click again to reverse sort order"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile view - supplier login",
+    "steps": [
+      "Step 1: Open mobile view URL /mobile",
+      "Step 2: Enter supplier credentials",
+      "Step 3: Click login",
+      "Step 4: Verify mobile-optimized dashboard loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile view - view and confirm orders",
+    "steps": [
+      "Step 1: Login as supplier on mobile",
+      "Step 2: Navigate to orders on mobile",
+      "Step 3: View pending orders",
+      "Step 4: Tap confirm button on an order",
+      "Step 5: Verify order status updates"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile view - ship order with tracking",
+    "steps": [
+      "Step 1: Login as supplier on mobile",
+      "Step 2: Navigate to confirmed orders",
+      "Step 3: Tap ship button",
+      "Step 4: Enter tracking number",
+      "Step 5: Confirm shipment",
+      "Step 6: Verify status changes to shipped"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile view - upload invoice",
+    "steps": [
+      "Step 1: Login as supplier on mobile",
+      "Step 2: Navigate to invoices section",
+      "Step 3: Tap upload button",
+      "Step 4: Select invoice image",
+      "Step 5: Fill in details",
+      "Step 6: Submit invoice",
+      "Step 7: Verify invoice appears in list"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile view - view and confirm reconciliations",
+    "steps": [
+      "Step 1: Login as supplier on mobile",
+      "Step 2: Navigate to reconciliations",
+      "Step 3: View received reconciliation",
+      "Step 4: Tap confirm button",
+      "Step 5: Verify status changes to confirmed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "JWT token validation on protected routes",
+    "steps": [
+      "Step 1: Attempt to access /api/v1/orders without token",
+      "Step 2: Verify 401 Unauthorized response",
+      "Step 3: Login and obtain token",
+      "Step 4: Access with valid token",
+      "Step 5: Verify successful access"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "JWT token expiration handling",
+    "steps": [
+      "Step 1: Use an expired JWT token",
+      "Step 2: Attempt to access protected route",
+      "Step 3: Verify 401 response with expiration message"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Role-based access control - purchaser cannot access admin",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Attempt to access admin-only route",
+      "Step 3: Verify 403 Forbidden response"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Role-based access control - supplier cannot access other supplier data",
+    "steps": [
+      "Step 1: Login as supplier 'huawei'",
+      "Step 2: Attempt to access orders from 'lixun'",
+      "Step 3: Verify access is denied or filtered"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API returns proper error messages for validation errors",
+    "steps": [
+      "Step 1: Attempt to create order with missing required fields",
+      "Step 2: Verify 400 Bad Request response",
+      "Step 3: Verify error message explains missing fields"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API handles invalid order IDs gracefully",
+    "steps": [
+      "Step 1: Attempt to access /api/v1/orders/99999",
+      "Step 2: Verify 404 Not Found response"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Database transaction rollback on failed order creation",
+    "steps": [
+      "Step 1: Attempt to create order with invalid supplier",
+      "Step 2: Verify order is not created",
+      "Step 3: Verify database remains consistent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order total amount calculation",
+    "steps": [
+      "Step 1: Create order with quantity 100 and unit price 50",
+      "Step 2: Verify total_amount is calculated as 5000",
+      "Step 3: Verify total displays correctly in UI"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order number generation uniqueness",
+    "steps": [
+      "Step 1: Create multiple orders",
+      "Step 2: Verify each order has unique order_no",
+      "Step 3: Verify order_no format is consistent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Inquiry number generation",
+    "steps": [
+      "Step 1: Create new inquiry",
+      "Step 2: Verify inquiry_no is generated",
+      "Step 3: Verify format is unique"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Reconciliation number generation",
+    "steps": [
+      "Step 1: Create new reconciliation",
+      "Step 2: Verify reconciliation_no is generated",
+      "Step 3: Verify format is unique"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Close inquiry after deadline",
+    "steps": [
+      "Step 1: Create inquiry with past deadline",
+      "Step 2: Verify inquiry status is automatically closed",
+      "Step 3: Verify suppliers cannot submit quotes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Filter invoices by status",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to invoices",
+      "Step 3: Filter by 'pending' status",
+      "Step 4: Verify only pending invoices shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Filter reconciliations by status",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to reconciliations",
+      "Step 3: Filter by 'paid' status",
+      "Step 4: Verify only paid reconciliations shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Date range filter for orders",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders",
+      "Step 3: Select date range filter",
+      "Step 4: Choose start and end dates",
+      "Step 5: Verify only orders in range are shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier rating display",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers",
+      "Step 3: Verify supplier ratings are displayed",
+      "Step 4: Verify rating is in valid range (0-5)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Dashboard shows pending orders count",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify pending orders widget shows count",
+      "Step 4: Verify count is accurate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Dashboard shows recent activity",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify recent orders are displayed",
+      "Step 4: Verify activity is sorted by date"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Responsive layout on tablet devices",
+    "steps": [
+      "Step 1: Open application on tablet viewport",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify layout adapts to tablet size",
+      "Step 4: Verify all elements are accessible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Login page Apple Design styling",
+    "steps": [
+      "Step 1: Navigate to login page",
+      "Step 2: Take screenshot",
+      "Step 3: Verify clean, minimalist design",
+      "Step 4: Verify proper spacing and typography",
+      "Step 5: Verify iOS-style rounded corners"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Dashboard Apple Design styling",
+    "steps": [
+      "Step 1: Login as admin",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Take screenshot",
+      "Step 4: Verify card-based layout",
+      "Step 5: Verify consistent spacing",
+      "Step 6: Verify readable typography"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Orders list table styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders",
+      "Step 3: Take screenshot",
+      "Step 4: Verify clean table design",
+      "Step 5: Verify alternating row colors",
+      "Step 6: Verify status badges have appropriate colors"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Supplier card styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to suppliers",
+      "Step 3: Take screenshot",
+      "Step 4: Verify card-based supplier display",
+      "Step 5: Verify contact info is clearly visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Form input styling consistency",
+    "steps": [
+      "Step 1: Navigate to create order form",
+      "Step 2: Take screenshot of form",
+      "Step 3: Verify consistent input styling",
+      "Step 4: Verify focus states are visible",
+      "Step 5: Verify error states are styled"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Button styling consistency",
+    "steps": [
+      "Step 1: Navigate to any page with buttons",
+      "Step 2: Take screenshot",
+      "Step 3: Verify primary buttons are styled consistently",
+      "Step 4: Verify secondary buttons are styled differently",
+      "Step 5: Verify hover states are visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Modal dialog styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Open any modal/dialog",
+      "Step 3: Take screenshot",
+      "Step 4: Verify modal has overlay background",
+      "Step 5: Verify centered positioning",
+      "Step 6: Verify close button is accessible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Status badge styling",
+    "steps": [
+      "Step 1: Navigate to orders with various statuses",
+      "Step 2: Take screenshot",
+      "Step 3: Verify pending status is yellow/orange",
+      "Step 4: Verify confirmed status is blue",
+      "Step 5: Verify completed status is green",
+      "Step 6: Verify cancelled/rejected is red/gray"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Loading state styling",
+    "steps": [
+      "Step 1: Perform action that triggers loading",
+      "Step 2: Take screenshot of loading state",
+      "Step 3: Verify loading spinner is visible",
+      "Step 4: Verify loading indicator matches design system"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Empty state styling",
+    "steps": [
+      "Step 1: Navigate to page with no data",
+      "Step 2: Take screenshot",
+      "Step 3: Verify empty state message is displayed",
+      "Step 4: Verify empty state has appropriate icon"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Error state styling",
+    "steps": [
+      "Step 1: Trigger an error condition",
+      "Step 2: Take screenshot of error",
+      "Step 3: Verify error message is styled appropriately",
+      "Step 4: Verify error uses red color scheme"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Navigation sidebar styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Take screenshot of sidebar",
+      "Step 3: Verify sidebar has proper background",
+      "Step 4: Verify navigation items are clearly visible",
+      "Step 5: Verify active state is highlighted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Header styling",
+    "steps": [
+      "Step 1: Login as any user",
+      "Step 2: Take screenshot of header",
+      "Step 3: Verify header has proper height",
+      "Step 4: Verify user menu is accessible",
+      "Step 5: Verify logo is displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Mobile view styling",
+    "steps": [
+      "Step 1: Open mobile view",
+      "Step 2: Take screenshot",
+      "Step 3: Verify mobile-optimized layout",
+      "Step 4: Verify touch-friendly button sizes",
+      "Step 5: Verify readable on small screens"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Finance page styling",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Take screenshot",
+      "Step 4: Verify clean layout",
+      "Step 5: Verify reconciliation and invoice sections are clear"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Sourcing page styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to sourcing page",
+      "Step 3: Take screenshot",
+      "Step 4: Verify inquiry cards are styled",
+      "Step 5: Verify quotation comparison is readable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "AI feature UI styling",
+    "steps": [
+      "Step 1: Navigate to AI order creation",
+      "Step 2: Take screenshot",
+      "Step 3: Verify AI input area is prominent",
+      "Step 4: Verify results display is clear"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Dropdown/select styling",
+    "steps": [
+      "Step 1: Navigate to form with dropdowns",
+      "Step 2: Take screenshot of dropdown",
+      "Step 3: Verify dropdown matches design system",
+      "Step 4: Verify selected state is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Date picker styling",
+    "steps": [
+      "Step 1: Navigate to form with date field",
+      "Step 2: Open date picker",
+      "Step 3: Take screenshot",
+      "Step 4: Verify date picker matches iOS style"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Pagination styling",
+    "steps": [
+      "Step 1: Navigate to orders with pagination",
+      "Step 2: Take screenshot of pagination",
+      "Step 3: Verify pagination controls are styled",
+      "Step 4: Verify current page is highlighted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Search input styling",
+    "steps": [
+      "Step 1: Navigate to page with search",
+      "Step 2: Take screenshot",
+      "Step 3: Verify search input has proper styling",
+      "Step 4: Verify search icon is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Filter dropdown styling",
+    "steps": [
+      "Step 1: Navigate to orders page",
+      "Step 2: Click filter dropdown",
+      "Step 3: Take screenshot of dropdown",
+      "Step 4: Verify filter options are readable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Toast notification styling",
+    "steps": [
+      "Step 1: Perform action that triggers success toast",
+      "Step 2: Take screenshot of toast",
+      "Step 3: Verify toast appears in correct position",
+      "Step 4: Verify success toast is green"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Confirmation dialog styling",
+    "steps": [
+      "Step 1: Trigger action requiring confirmation",
+      "Step 2: Take screenshot of dialog",
+      "Step 3: Verify dialog has proper styling",
+      "Step 4: Verify action buttons are clear"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Statistics card styling on dashboard",
+    "steps": [
+      "Step 1: Login as admin",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Take screenshot of statistics cards",
+      "Step 4: Verify cards have consistent styling",
+      "Step 5: Verify numbers are prominent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Profile/user menu styling",
+    "steps": [
+      "Step 1: Login as any user",
+      "Step 2: Click user menu",
+      "Step 3: Take screenshot of menu",
+      "Step 4: Verify menu is styled correctly",
+      "Step 5: Verify logout option is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Tab navigation styling on finance page",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to finance page",
+      "Step 3: Take screenshot of tabs",
+      "Step 4: Verify tabs are styled consistently",
+      "Step 5: Verify active tab is highlighted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Supplier detail modal styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Click on supplier to view details",
+      "Step 3: Take screenshot of modal",
+      "Step 4: Verify all information is readable",
+      "Step 5: Verify modal has proper styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Order detail page styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Click on order to view details",
+      "Step 3: Take screenshot",
+      "Step 4: Verify information is well-organized",
+      "Step 5: Verify timeline/history is readable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Quote comparison table styling",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to quotations for an inquiry",
+      "Step 3: Take screenshot",
+      "Step 4: Verify comparison table is readable",
+      "Step 5: Verify prices are clearly visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Color scheme consistency",
+    "steps": [
+      "Step 1: Navigate through multiple pages",
+      "Step 2: Take screenshots of each",
+      "Step 3: Verify consistent color scheme",
+      "Step 4: Verify primary color is used consistently"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Font typography consistency",
+    "steps": [
+      "Step 1: Navigate through application",
+      "Step 2: Verify consistent font family",
+      "Step 3: Verify consistent font sizes for headings",
+      "Step 4: Verify consistent font sizes for body text"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Icon consistency",
+    "steps": [
+      "Step 1: Navigate through application",
+      "Step 2: Verify icons are from consistent set",
+      "Step 3: Verify icon sizes are consistent",
+      "Step 4: Verify icons are properly aligned"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Spacing consistency (margins/padding)",
+    "steps": [
+      "Step 1: Navigate through application",
+      "Step 2: Verify consistent spacing between elements",
+      "Step 3: Verify consistent padding within components",
+      "Step 4: Verify consistent margins between sections"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Border radius consistency",
+    "steps": [
+      "Step 1: Navigate to forms and cards",
+      "Step 2: Verify buttons have consistent border radius",
+      "Step 3: Verify cards have consistent border radius",
+      "Step 4: Verify inputs have consistent border radius"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Shadow consistency",
+    "steps": [
+      "Step 1: Navigate to modals and dropdowns",
+      "Step 2: Verify shadows are consistent",
+      "Step 3: Verify shadow depth is appropriate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order status workflow - complete lifecycle",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create new order (status: pending)",
+      "Step 3: Verify status is pending",
+      "Step 4: Login as supplier",
+      "Step 5: Confirm order (status: confirmed)",
+      "Step 6: Ship order with tracking (status: shipped)",
+      "Step 7: Login as purchaser",
+      "Step 8: Confirm receipt (status: received)",
+      "Step 9: Complete order (status: completed)",
+      "Step 10: Verify full lifecycle is tracked"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Prevent modifying completed orders",
+    "Steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to completed order",
+      "Step 3: Attempt to edit order",
+      "Step 4: Verify edit is disabled or shows warning"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Prevent cancelling completed orders",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to completed order",
+      "Step 3: Attempt to cancel order",
+      "Step 4: Verify cancellation is prevented"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier can only see their own orders",
+    "steps": [
+      "Step 1: Login as supplier 'huawei'",
+      "Step 2: Navigate to orders",
+      "Step 3: Verify only orders for 'huawei' are shown",
+      "Step 4: Verify no other supplier orders are visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Finance can view all orders for reconciliation",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to reconciliation creation",
+      "Step 3: Verify all relevant orders are accessible",
+      "Step 4: Verify orders can be filtered by supplier"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Excel import for bulk order creation",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders",
+      "Step 3: Click 'Import' button",
+      "Step 4: Select Excel file with order data",
+      "Step 5: Click upload",
+      "Step 6: Verify preview of data",
+      "Step 7: Confirm import",
+      "Step 8: Verify multiple orders are created"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Export orders to Excel",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to orders",
+      "Step 3: Apply filters if needed",
+      "Step 4: Click 'Export' button",
+      "Step 5: Verify Excel file is downloaded",
+      "Step 6: Verify data matches filtered results"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier rating update",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to completed orders with supplier",
+      "Step 3: Click rate supplier option",
+      "Step 4: Select rating (1-5 stars)",
+      "Step 5: Submit rating",
+      "Step 6: Verify supplier rating is updated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order notes functionality",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create order with notes",
+      "Step 3: Verify notes are saved",
+      "Step 4: View order details",
+      "Step 5: Verify notes are displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Edit order notes",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to existing order",
+      "Step 3: Add or edit notes",
+      "Step 4: Save changes",
+      "Step 5: Verify notes are updated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Inquiry deadline validation",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create inquiry with past deadline",
+      "Step 3: Verify validation error for past date"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Quotation validity period",
+    "steps": [
+      "Step 1: Login as supplier",
+      "Step 2: Submit quotation with valid until date",
+      "Step 3: Verify quotation is accepted",
+      "Step 4: Wait or simulate past validity date",
+      "Step 5: Verify quotation is expired"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Reconciliation line items display",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Create reconciliation",
+      "Step 3: View reconciliation details",
+      "Step 4: Verify line items are displayed",
+      "Step 5: Verify totals are calculated correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Link invoice to reconciliation",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Create reconciliation",
+      "Step 3: Link verified invoice to reconciliation",
+      "Step 4: Verify invoice is associated",
+      "Step 5: Verify amounts match"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Invoice amount validation",
+    "steps": [
+      "Step 1: Login as supplier",
+      "Step 2: Attempt to upload invoice with amount mismatch to order",
+      "Step 3: Verify warning or validation message"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Tax amount calculation on invoices",
+    "steps": [
+      "Step 1: Login as supplier",
+      "Step 2: Enter invoice amount",
+      "Step 3: Enter tax rate",
+      "Step 4: Verify tax amount is calculated",
+      "Step 5: Verify total is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Dashboard quick actions",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Click quick action 'Create Order'",
+      "Step 4: Verify redirect to order creation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Dashboard recent orders widget",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify recent orders widget",
+      "Step 4: Click on recent order",
+      "Step 5: Verify redirect to order details"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Unauthorized API access returns 401",
+    "steps": [
+      "Step 1: Make API request without Authorization header",
+      "Step 2: Verify 401 response code"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API rate limiting",
+    "steps": [
+      "Step 1: Make many rapid API requests",
+      "Step 2: Verify rate limiting is applied",
+      "Step 3: Verify 429 response after limit"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Session timeout handling",
+    "steps": [
+      "Step 1: Login and wait for session to expire",
+      "Step 2: Attempt to perform action",
+      "Step 3: Verify redirect to login",
+      "Step 4: Verify message about session expiration"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Remember me functionality",
+    "steps": [
+      "Step 1: Login with 'Remember Me' checked",
+      "Step 2: Close browser",
+      "Step 3: Reopen application",
+      "Step 4: Verify user remains logged in"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password change functionality",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Navigate to profile settings",
+      "Step 3: Click change password",
+      "Step 4: Enter current password",
+      "Step 5: Enter new password",
+      "Step 6: Confirm new password",
+      "Step 7: Verify password is changed",
+      "Step 8: Verify can login with new password"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Incorrect current password validation",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Navigate to change password",
+      "Step 3: Enter wrong current password",
+      "Step 4: Enter new password",
+      "Step 5: Confirm new password",
+      "Step 6: Submit",
+      "Step 7: Verify error message about incorrect password"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "New password confirmation validation",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Navigate to change password",
+      "Step 3: Enter current password",
+      "Step 4: Enter new password",
+      "Step 5: Enter different confirmation password",
+      "Step 6: Submit",
+      "Step 7: Verify validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Minimum password length validation",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Navigate to change password",
+      "Step 3: Enter current password",
+      "Step 4: Enter short new password",
+      "Step 5: Submit",
+      "Step 6: Verify validation error for minimum length"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Access control - purchaser cannot access finance features",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Attempt to navigate to finance module",
+      "Step 3: Verify access is denied"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Access control - finance cannot access admin features",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Attempt to navigate to admin settings",
+      "Step 3: Verify access is denied"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Access control - admin can access all features",
+    "steps": [
+      "Step 1: Login as admin",
+      "Step 2: Verify access to all modules",
+      "Step 3: Verify admin can access settings"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "WeChat login page rendering for suppliers",
+    "steps": [
+      "Step 1: Navigate to login page as supplier",
+      "Step 2: Verify WeChat login option is visible",
+      "Step 3: Verify proper styling for WeChat button"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "WeChat OAuth callback handling",
+    "steps": [
+      "Step 1: Initiate WeChat login",
+      "Step 2: Complete WeChat authorization",
+      "Step 3: Verify callback processes correctly",
+      "Step 4: Verify user is logged in"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile bottom navigation",
+    "steps": [
+      "Step 1: Open mobile view",
+      "Step 2: Verify bottom navigation is visible",
+      "Step 3: Verify navigation has correct items",
+      "Step 4: Tap each navigation item",
+      "Step 5: Verify correct page loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile pull to refresh",
+    "steps": [
+      "Step 1: Open mobile orders page",
+      "Step 2: Pull down to refresh",
+      "Step 3: Verify data refreshes",
+      "Step 4: Verify loading indicator"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile swipe actions on orders",
+    "steps": [
+      "Step 1: Open mobile orders list",
+      "Step 2: Swipe on an order item",
+      "Step 3: Verify action buttons appear",
+      "Step 4: Tap action button",
+      "Step 5: Verify action executes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Image upload file type validation",
+    "steps": [
+      "Step 1: Navigate to invoice upload",
+      "Step 2: Attempt to upload non-image file",
+      "Step 3: Verify validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Image upload file size validation",
+    "steps": [
+      "Step 1: Navigate to invoice upload",
+      "Step 2: Attempt to upload large file",
+      "Step 3: Verify file size validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Excel import file type validation",
+    "steps": [
+      "Step 1: Navigate to order import",
+      "Step 2: Attempt to upload non-Excel file",
+      "Step 3: Verify file type validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order quantity must be positive",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create order with zero quantity",
+      "Step 3: Verify validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order quantity decimal validation",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create order with decimal quantity",
+      "Step 3: Verify decimal quantities are allowed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Unit price must be positive",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create order with negative price",
+      "Step 3: Verify validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Required field validation - supplier",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create order without supplier",
+      "Step 3: Verify supplier is required"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Required field validation - material",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create order without material",
+      "Step 3: Verify material is required"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Required field validation - delivery date",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create order without delivery date",
+      "Step 3: Verify delivery date is required"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Unique constraint - supplier name",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create supplier with existing name",
+      "Step 3: Verify unique constraint error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Unique constraint - material code",
+    "steps": [
+      "Step 1: Login as admin",
+      "Step 2: Create material with existing code",
+      "Step 3: Verify unique constraint error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Unique constraint - order number",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Attempt to create duplicate order number",
+      "Step 3: Verify unique constraint error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Contact phone format validation",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Create supplier with invalid phone",
+      "Step 3: Verify phone format validation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "WeChat template message for new order",
+    "steps": [
+      "Step 1: Purchaser creates order for supplier",
+      "Step 2: Verify supplier receives notification",
+      "Step 3: Verify notification contains order details"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "WeChat template message for shipment",
+    "steps": [
+      "Step 1: Supplier ships order",
+      "Step 2: Verify purchaser receives notification",
+      "Step 3: Verify notification contains tracking info"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "WeChat template message for reconciliation",
+    "steps": [
+      "Step 1: Finance sends reconciliation to supplier",
+      "Step 2: Verify supplier receives notification",
+      "Step 3: Verify notification contains amount details"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search across multiple fields",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Search by supplier name in orders",
+      "Step 3: Verify results include matching supplier",
+      "Step 4: Search by material name",
+      "Step 5: Verify results include matching material"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Combined filters - status and date range",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Filter orders by status 'completed'",
+      "Step 3: Apply date range filter",
+      "Step 4: Verify results match both filters"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Clear all filters",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Apply multiple filters",
+      "Step 3: Click clear all filters",
+      "Step 4: Verify all filters are reset",
+      "Step 5: Verify all data is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Bulk order status update",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Select multiple orders",
+      "Step 3: Choose bulk action",
+      "Step 4: Confirm action",
+      "Step 5: Verify all selected orders are updated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Bulk supplier activation",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Select multiple blocked suppliers",
+      "Step 3: Click bulk activate",
+      "Step 4: Confirm action",
+      "Step 5: Verify all selected suppliers are activated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order count by status on dashboard",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify count of pending orders",
+      "Step 4: Verify count of confirmed orders",
+      "Step 5: Verify counts are accurate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier count statistics",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify total supplier count",
+      "Step 4: Verify active supplier count",
+      "Step 5: Verify blocked supplier count"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Monthly order volume chart",
+    "steps": [
+      "Step 1: Login as admin",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify monthly order chart is displayed",
+      "Step 4: Verify chart shows correct data"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Supplier performance metrics",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to supplier details",
+      "Step 3: View performance metrics",
+      "Step 4: Verify on-time delivery rate",
+      "Step 5: Verify quality rating"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Order delivery date overdue warning",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: View orders with overdue delivery",
+      "Step 3: Verify overdue indicator is shown",
+      "Step 4: Verify warning is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Pending action notifications",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify pending actions are highlighted",
+      "Step 4: Verify notification count is accurate"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Keyboard navigation support",
+    "steps": [
+      "Step 1: Navigate to form without mouse",
+      "Step 2: Use Tab to navigate fields",
+      "Step 3: Use Enter to submit",
+      "Step 4: Verify all interactions work via keyboard"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Screen reader accessibility - headings",
+    "steps": [
+      "Step 1: Inspect page with accessibility tool",
+      "Step 2: Verify proper heading hierarchy",
+      "Step 3: Verify h1, h2, h3 are used correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Screen reader accessibility - alt text",
+    "steps": [
+      "Step 1: Inspect images on page",
+      "Step 2: Verify alt text is present",
+      "Step 3: Verify decorative images have empty alt"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Form labels for accessibility",
+    "steps": [
+      "Step 1: Inspect form fields",
+      "Step 2: Verify all inputs have associated labels",
+      "Step 3: Verify label association is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Focus indicator visibility",
+    "steps": [
+      "Step 1: Navigate using keyboard",
+      "Step 2: Verify focus indicators are visible",
+      "Step 3: Verify focus style matches design"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Database migration - add new table",
+    "steps": [
+      "Step 1: Run database migration",
+      "Step 2: Verify new table is created",
+      "Step 3: Verify existing data is preserved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Database seed data loading",
+    "steps": [
+      "Step 1: Run seed script",
+      "Step 2: Verify default users are created",
+      "Step 3: Verify default suppliers exist",
+      "Step 4: Verify default materials exist"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API request timeout handling",
+    "steps": [
+      "Step 1: Simulate slow network",
+      "Step 2: Make API request",
+      "Step 3: Verify timeout error is shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Network error handling",
+    "steps": [
+      "Step 1: Disconnect network",
+      "Step 2: Attempt to perform action",
+      "Step 3: Verify error message is shown",
+      "Step 4: Verify retry option is available"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API response time within acceptable range",
+    "steps": [
+      "Step 1: Measure API response time",
+      "Step 2: Verify response under 2 seconds",
+      "Step 3: Verify no obvious performance issues"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Frontend bundle size optimization",
+    "steps": [
+      "Step 1: Build frontend application",
+      "Step 2: Verify bundle size is reasonable",
+      "Step 3: Verify code splitting is working"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Browser back button navigation",
+    "steps": [
+      "Step 1: Navigate through application",
+      "Step 2: Use browser back button",
+      "Step 3: Verify correct previous page loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "URL routing works correctly",
+    "steps": [
+      "Step 1: Directly navigate to URL /orders",
+      "Step 2: Verify orders page loads",
+      "Step 3: Navigate to /suppliers",
+      "Step 4: Verify suppliers page loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "404 page handling",
+    "steps": [
+      "Step 1: Navigate to non-existent route",
+      "Step 2: Verify 404 page is displayed",
+      "Step 3: Verify option to return home"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Logout clears all local state",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Perform various actions",
+      "Step 3: Logout",
+      "Step 4: Verify no user data in local storage",
+      "Step 5: Verify no sensitive data in memory"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Multiple browser tabs - session handling",
+    "steps": [
+      "Step 1: Login in first tab",
+      "Step 2: Open second tab",
+      "Step 3: Logout in first tab",
+      "Step 4: Refresh second tab",
+      "Step 5: Verify second tab shows logged out state"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Concurrent order modifications",
+    "Steps": [
+      "Step 1: Open order in two browser sessions",
+      "Step 2: Modify in first session",
+      "Step 3: Submit in second session",
+      "Step 4: Verify conflict handling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Large dataset handling - pagination",
+    "steps": [
+      "Step 1: Create 100+ orders",
+      "Step 2: Navigate to orders page",
+      "Step 3: Verify pagination works correctly",
+      "Step 4: Verify performance is acceptable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Date timezone handling",
+    "steps": [
+      "Step 1: Create order with specific date",
+      "Step 2: View order in different timezone",
+      "Step 3: Verify date is displayed correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Currency formatting",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: View orders with prices",
+      "Step 3: Verify currency symbol is displayed",
+      "Step 4: Verify formatting is consistent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Number formatting for quantities",
+    "steps": [
+      "Step 1: Login as purchaser",
+      "Step 2: View orders with large quantities",
+      "Step 3: Verify thousand separators are used"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Internationalization - Chinese language",
+    "steps": [
+      "Step 1: Verify all UI text is in Chinese",
+      "Step 2: Verify no untranslated strings",
+      "Step 3: Verify date formats are Chinese"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Print-friendly order invoice",
+    "steps": [
+      "Step 1: Navigate to order details",
+      "Step 2: Click print button",
+      "Step 3: Verify print layout is proper",
+      "Step 4: Verify all details are included"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "PDF export of reconciliation",
+    "steps": [
+      "Step 1: Login as finance",
+      "Step 2: Navigate to reconciliation",
+      "Step 3: Click export PDF",
+      "Step 4: Verify PDF downloads",
+      "Step 5: Verify PDF content is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API health check endpoint",
+    "steps": [
+      "Step 1: Call /health or /api/health endpoint",
+      "Step 2: Verify 200 OK response",
+      "Step 3: Verify status is healthy"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API version endpoint",
+    "steps": [
+      "Step 1: Call /api/version endpoint",
+      "Step 2: Verify version information is returned"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Request ID for debugging",
+    "steps": [
+      "Step 1: Make API request",
+      "Step 2: Check response headers",
+      "Step 3: Verify request ID is present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CORS configuration",
+    "steps": [
+      "Step 1: Make cross-origin API request",
+      "Step 2: Verify CORS headers are present",
+      "Step 3: Verify correct origin is allowed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "HTTPS redirect in production",
+    "steps": [
+      "Step 1: Access HTTP URL in production",
+      "Step 2: Verify redirect to HTTPS"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Security headers",
+    "steps": [
+      "Step 1: Check API response headers",
+      "Step 2: Verify security headers are set",
+      "Step 3: Verify X-Content-Type-Options",
+      "Step 4: Verify X-Frame-Options"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SQL injection prevention",
+    "steps": [
+      "Step 1: Attempt SQL injection in search field",
+      "Step 2: Verify query is sanitized",
+      "Step 3: Verify no data leakage"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "XSS prevention in user input",
+    "steps": [
+      "Step 1: Enter script tag in text field",
+      "Step 2: Save data",
+      "Step 3: View data",
+      "Step 4: Verify script is not executed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CSRF protection",
+    "steps": [
+      "Step 1: Verify CSRF token is required",
+      "Step 2: Attempt request without token",
+      "Step 3: Verify request is rejected"
+    ],
+    "passes": false
+  }
+]
