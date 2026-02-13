@@ -13,6 +13,7 @@ import quotationRoutes from './routes/quotations.js';
 import reconciliationRoutes from './routes/reconciliations.js';
 import invoiceRoutes from './routes/invoices.js';
 import aiRoutes from './routes/ai.js';
+import dashboardRoutes from './routes/dashboard.js';
 
 // Load environment variables
 dotenv.config();
@@ -40,6 +41,7 @@ app.use('/api/v1/quotations', quotationRoutes);
 app.use('/api/v1/reconciliations', reconciliationRoutes);
 app.use('/api/v1/invoices', invoiceRoutes);
 app.use('/api/v1/ai', aiRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

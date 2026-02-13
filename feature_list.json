@@ -2324,7 +2324,7 @@
       "Step 2: Verify 200 OK response",
       "Step 3: Verify status is healthy"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2333,7 +2333,7 @@
       "Step 1: Call /api/version endpoint",
       "Step 2: Verify version information is returned"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
