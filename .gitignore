@@ -42,3 +42,11 @@ coverage/
 # Temp
 tmp/
 temp/
+
+# Test scripts
+*.mjs
+test-*.js
+verify-*.js
+
+# Vite
+.vite/
