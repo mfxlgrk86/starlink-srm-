@@ -87,6 +87,30 @@ const OrderDetail = () => {
     return <span className={`badge badge-${status}`}>{statusMap[status] || status}</span>;
   };
 
+  const getStatusColor = (status) => {
+    const colors = {
+      pending: 'bg-amber-500',
+      confirmed: 'bg-blue-500',
+      shipped: 'bg-purple-500',
+      received: 'bg-indigo-500',
+      completed: 'bg-green-500',
+      cancelled: 'bg-gray-500'
+    };
+    return colors[status] || 'bg-gray-500';
+  };
+
+  const getActionLabel = (action) => {
+    const labels = {
+      created: '订单创建',
+      confirmed: '订单确认',
+      shipped: '已发货',
+      received: '已收货',
+      completed: '订单完成',
+      cancelled: '订单取消'
+    };
+    return labels[action] || action;
+  };
+
   if (loading) {
     return <div className="text-center py-12 text-gray-500">加载中...</div>;
   }
@@ -98,6 +122,17 @@ const OrderDetail = () => {
   const isPurchaser = user?.role === 'purchaser' || user?.role === 'admin';
   const isSupplier = user?.role === 'supplier' && order.supplier_id === user.supplierId;
 
+  // Order status steps
+  const statusSteps = [
+    { key: 'pending', label: '待确认', icon: '📝' },
+    { key: 'confirmed', label: '已确认', icon: '✅' },
+    { key: 'shipped', label: '已发货', icon: '🚚' },
+    { key: 'received', label: '已收货', icon: '📦' },
+    { key: 'completed', label: '已完成', icon: '🎉' }
+  ];
+
+  const currentStepIndex = statusSteps.findIndex(s => s.key === order.status);
+
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -106,9 +141,38 @@ const OrderDetail = () => {
         <span>{order.order_no}</span>
       </div>
 
+      {/* Status Timeline */}
+      {order.status !== 'cancelled' && (
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">订单进度</h3>
+          <div className="flex items-center justify-between">
+            {statusSteps.map((step, index) => (
+              <React.Fragment key={step.key}>
+                <div className="flex flex-col items-center">
+                  <div className={`
+                    w-12 h-12 rounded-full flex items-center justify-center text-xl
+                    ${index <= currentStepIndex ? getStatusColor(step.key) + ' text-white' : 'bg-gray-200 text-gray-400'}
+                    transition-all duration-300
+                  `}>
+                    {step.icon}
+                  </div>
+                  <span className={`mt-2 text-sm font-medium ${index <= currentStepIndex ? 'text-gray-800' : 'text-gray-400'}`}>
+                    {step.label}
+                  </span>
+                </div>
+                {index < statusSteps.length - 1 && (
+                  <div className={`flex-1 h-1 mx-2 rounded ${index < currentStepIndex ? 'bg-indigo-500' : 'bg-gray-200'}`} />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Order Info */}
         <div className="md:col-span-2 space-y-6">
+          {/* Basic Info Card */}
           <div className="card">
             <h3 className="text-lg font-semibold mb-4">订单信息</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -161,31 +225,84 @@ const OrderDetail = () => {
             </div>
           </div>
 
+          {/* Material Details Card */}
+          <div className="card">
+            <h3 className="text-lg font-semibold mb-4">物料详情</h3>
+            <div className="flex items-start space-x-4">
+              <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
+                📦
+              </div>
+              <div className="flex-1">
+                <div className="font-medium text-lg">{order.material_name}</div>
+                <div className="text-sm text-gray-500 mt-1">物料编码: {order.material_code}</div>
+                {order.material_spec && (
+                  <div className="text-sm text-gray-500">规格: {order.material_spec}</div>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Order Timeline */}
           <div className="card">
             <h3 className="text-lg font-semibold mb-4">订单日志</h3>
             {order.logs && order.logs.length > 0 ? (
-              <div className="space-y-4">
-                {order.logs.map((log) => (
-                  <div key={log.id} className="flex gap-4">
-                    <div className="w-2 h-2 mt-2 rounded-full bg-blue-500 flex-shrink-0" />
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <span className="font-medium">{log.action}</span>
-                        <span className="text-sm text-gray-500">
-                          {dayjs(log.created_at).format('MM-DD HH:mm')}
-                        </span>
+              <div className="relative">
+                {/* Timeline line */}
+                <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200" />
+
+                <div className="space-y-6">
+                  {order.logs.map((log, index) => (
+                    <div key={log.id} className="relative flex gap-4 pl-8">
+                      {/* Timeline dot */}
+                      <div className={`
+                        absolute left-1.5 w-3 h-3 rounded-full border-2 border-white
+                        ${index === 0 ? 'bg-indigo-500' : 'bg-gray-300'}
+                      `} />
+
+                      <div className="flex-1 pb-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-gray-800">
+                            {getActionLabel(log.action)}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            {dayjs(log.created_at).format('YYYY-MM-DD HH:mm')}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-500 mt-1">
+                          {log.old_status && (
+                            <span>
+                              {log.old_status === 'pending' ? '待确认' :
+                               log.old_status === 'confirmed' ? '已确认' :
+                               log.old_status === 'shipped' ? '已发货' :
+                               log.old_status === 'received' ? '已收货' :
+                               log.old_status === 'completed' ? '已完成' :
+                               log.old_status === 'cancelled' ? '已取消' : log.old_status}
+                              {' → '}
+                            </span>
+                          )}
+                          {log.new_status && (
+                            <span>
+                              {log.new_status === 'pending' ? '待确认' :
+                               log.new_status === 'confirmed' ? '已确认' :
+                               log.new_status === 'shipped' ? '已发货' :
+                               log.new_status === 'received' ? '已收货' :
+                               log.new_status === 'completed' ? '已完成' :
+                               log.new_status === 'cancelled' ? '已取消' : log.new_status}
+                            </span>
+                          )}
+                          {log.operator_name && (
+                            <span className="ml-2">操作人: {log.operator_name}</span>
+                          )}
+                        </div>
+                        {log.remark && (
+                          <div className="text-sm mt-1 text-gray-600 bg-gray-50 p-2 rounded">
+                            {log.remark}
+                          </div>
+                        )}
                       </div>
-                      <div className="text-sm text-gray-500">
-                        {log.old_status && `${log.old_status} → `}{log.new_status}
-                        {log.operator_name && ` by ${log.operator_name}`}
-                      </div>
-                      {log.remark && (
-                        <div className="text-sm mt-1">{log.remark}</div>
-                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             ) : (
               <div className="text-gray-500">暂无日志</div>
@@ -193,8 +310,28 @@ const OrderDetail = () => {
           </div>
         </div>
 
-        {/* Actions */}
+        {/* Sidebar */}
         <div className="space-y-6">
+          {/* Supplier Info */}
+          <div className="card">
+            <h3 className="text-lg font-semibold mb-4">供应商信息</h3>
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                {order.supplier_name?.charAt(0)}
+              </div>
+              <div>
+                <div className="font-medium">{order.supplier_name}</div>
+                <Link
+                  to={`/suppliers/${order.supplier_id}`}
+                  className="text-sm text-indigo-600 hover:text-indigo-700"
+                >
+                  查看详情 →
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
           <div className="card">
             <h3 className="text-lg font-semibold mb-4">操作</h3>
             <div className="space-y-3">
@@ -228,7 +365,30 @@ const OrderDetail = () => {
                   <button onClick={handleCancel} className="btn-danger w-full">
                     取消订单
                   </button>
-                )}
+              )}
+            </div>
+          </div>
+
+          {/* Order Meta */}
+          <div className="card">
+            <h3 className="text-lg font-semibold mb-4">订单信息</h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">创建人</span>
+                <span className="font-medium">{order.created_by_name || '-'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">创建时间</span>
+                <span className="font-medium">
+                  {order.created_at ? dayjs(order.created_at).format('YYYY-MM-DD HH:mm') : '-'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">更新时间</span>
+                <span className="font-medium">
+                  {order.updated_at ? dayjs(order.updated_at).format('YYYY-MM-DD HH:mm') : '-'}
+                </span>
+              </div>
             </div>
           </div>
         </div>

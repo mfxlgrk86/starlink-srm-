@@ -220,4 +220,33 @@ router.put('/:id/rating', authenticate, authorize('admin', 'purchaser'), (req, r
   }
 });
 
+// Export suppliers
+router.get('/export', authenticate, (req, res) => {
+  try {
+    const { status, search } = req.query;
+
+    let query = `SELECT * FROM suppliers WHERE 1=1`;
+    const params = [];
+
+    if (status) {
+      query += ' AND status = ?';
+      params.push(status);
+    }
+
+    if (search) {
+      query += ' AND (name LIKE ? OR contact_name LIKE ?)';
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    query += ' ORDER BY created_at DESC';
+
+    const suppliers = db.prepare(query).all(...params);
+
+    res.json({ data: suppliers });
+  } catch (error) {
+    console.error('Export suppliers error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
 export default router;

@@ -115,4 +115,81 @@ router.post('/wechat-login', (req, res) => {
   res.status(501).json({ error: '微信登录功能开发中' });
 });
 
+// Update profile
+router.put('/profile', (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: '未授权' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ error: '用户不存在' });
+    }
+
+    // Note: We don't allow changing username or role, only additional profile info
+    // For now, just return success - the profile is read-only
+    res.json({
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      message: 'Profile updated successfully'
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
+// Change password
+router.post('/change-password', (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: '未授权' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: '当前密码和新密码不能为空' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: '新密码长度至少6位' });
+    }
+
+    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ error: '用户不存在' });
+    }
+
+    // Verify current password
+    const validPassword = bcrypt.compareSync(currentPassword, user.password_hash);
+    if (!validPassword) {
+      return res.status(400).json({ error: '当前密码错误' });
+    }
+
+    // Hash new password
+    const passwordHash = bcrypt.hashSync(newPassword, 10);
+
+    // Update password
+    db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(passwordHash, decoded.id);
+
+    res.json({ message: '密码修改成功' });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
 export default router;

@@ -78,10 +78,12 @@ router.get('/:id', authenticate, (req, res) => {
 
     // Get related orders
     const orders = db.prepare(`
-      SELECT * FROM orders
-      WHERE supplier_id = ?
-      AND status IN ('received', 'completed')
-      AND created_at BETWEEN ? AND ?
+      SELECT o.*, m.name as material_name
+      FROM orders o
+      LEFT JOIN materials m ON o.material_id = m.id
+      WHERE o.supplier_id = ?
+      AND o.status IN ('received', 'completed')
+      AND o.created_at BETWEEN ? AND ?
     `).all(reconciliation.supplier_id, reconciliation.period_start, reconciliation.period_end);
 
     // Get related invoices
@@ -94,6 +96,30 @@ router.get('/:id', authenticate, (req, res) => {
     res.json({ ...reconciliation, orders, invoices });
   } catch (error) {
     console.error('Get reconciliation error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
+// Update reconciliation
+router.put('/:id', authenticate, authorize('admin', 'finance'), (req, res) => {
+  try {
+    const { ai_audit_result } = req.body;
+
+    const reconciliation = db.prepare('SELECT * FROM reconciliations WHERE id = ?').get(req.params.id);
+
+    if (!reconciliation) {
+      return res.status(404).json({ error: '对账单不存在' });
+    }
+
+    if (ai_audit_result !== undefined) {
+      db.prepare('UPDATE reconciliations SET ai_audit_result = ? WHERE id = ?').run(ai_audit_result, req.params.id);
+    }
+
+    const updated = db.prepare('SELECT * FROM reconciliations WHERE id = ?').get(req.params.id);
+
+    res.json(updated);
+  } catch (error) {
+    console.error('Update reconciliation error:', error);
     res.status(500).json({ error: '服务器错误' });
   }
 });
@@ -205,6 +231,46 @@ router.post('/:id/paid', authenticate, authorize('admin', 'purchaser', 'finance'
     res.json(updatedReconciliation);
   } catch (error) {
     console.error('Mark paid error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
+// Export reconciliations
+router.get('/export', authenticate, (req, res) => {
+  try {
+    const { status, supplier_id } = req.query;
+
+    let query = `
+      SELECT r.*, s.name as supplier_name
+      FROM reconciliations r
+      JOIN suppliers s ON r.supplier_id = s.id
+      WHERE 1=1
+    `;
+    const params = [];
+
+    // Filter by role
+    if (req.user.role === 'supplier') {
+      query += ' AND r.supplier_id = ?';
+      params.push(req.user.supplierId);
+    }
+
+    if (status) {
+      query += ' AND r.status = ?';
+      params.push(status);
+    }
+
+    if (supplier_id && req.user.role !== 'supplier') {
+      query += ' AND r.supplier_id = ?';
+      params.push(supplier_id);
+    }
+
+    query += ' ORDER BY r.created_at DESC';
+
+    const reconciliations = db.prepare(query).all(...params);
+
+    res.json({ data: reconciliations });
+  } catch (error) {
+    console.error('Export reconciliations error:', error);
     res.status(500).json({ error: '服务器错误' });
   }
 });

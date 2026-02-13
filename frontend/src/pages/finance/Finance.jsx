@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { reconciliationsAPI, invoicesAPI } from '../../services/api';
 import { useAuthStore } from '../../stores/authStore';
 
@@ -104,17 +105,28 @@ const Finance = () => {
           <h2 className="text-xl font-semibold text-gray-800">财务协同</h2>
           <p className="text-sm text-gray-500 mt-1">管理对账单和发票</p>
         </div>
-        {isFinance && (
-          <button
-            onClick={() => setShowCreateReconciliation(true)}
-            className="btn-primary flex items-center"
+        <div className="flex items-center space-x-3">
+          <Link
+            to="/finance/ai-history"
+            className="flex items-center px-4 py-2 bg-purple-100 text-purple-700 rounded-lg font-medium hover:bg-purple-200 transition-colors"
           >
             <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
-            创建对账单
-          </button>
-        )}
+            AI审计记录
+          </Link>
+          {isFinance && (
+            <button
+              onClick={() => setShowCreateReconciliation(true)}
+              className="btn-primary flex items-center"
+            >
+              <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              创建对账单
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -192,7 +204,16 @@ const Finance = () => {
                     </span>
                   </div>
                 </div>
-                <div className="px-4 pb-4">
+                <div className="px-4 pb-4 space-y-2">
+                  <Link
+                    to={`/finance/ai/${recon.id}`}
+                    className="flex items-center justify-center w-full px-3 py-2 bg-purple-50 text-purple-700 rounded-lg text-sm font-medium hover:bg-purple-100 transition-colors"
+                  >
+                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    AI审计
+                  </Link>
                   {isFinance && recon.status === 'draft' && (
                     <button
                       onClick={() => handleSend(recon.id)}

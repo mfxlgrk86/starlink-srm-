@@ -1,5 +1,12 @@
 import express from 'express';
-import { authenticate } from '../middlewares/auth.js';
+import Database from 'better-sqlite3';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { authenticate, authorize } from '../middlewares/auth.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const db = new Database(path.join(__dirname, '..', '..', 'database', 'starlink.db'));
 
 const router = express.Router();
 
@@ -119,6 +126,108 @@ router.post('/ocr-invoice', authenticate, async (req, res) => {
   } catch (error) {
     console.error('AI OCR invoice error:', error);
     res.status(500).json({ error: 'AI处理失败' });
+  }
+});
+
+// Get audit history
+router.get('/audit-history', authenticate, (req, res) => {
+  try {
+    const { page = 1, limit = 20 } = req.query;
+
+    let query = `
+      SELECT r.*, s.name as supplier_name, r.ai_audit_result
+      FROM reconciliations r
+      JOIN suppliers s ON r.supplier_id = s.id
+      WHERE r.ai_audit_result IS NOT NULL
+    `;
+    const params = [];
+
+    // Filter by role
+    if (req.user.role === 'supplier') {
+      query += ' AND r.supplier_id = ?';
+      params.push(req.user.supplierId);
+    }
+
+    query += ' ORDER BY r.created_at DESC';
+
+    const offset = (page - 1) * limit;
+    query += ' LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), parseInt(offset));
+
+    const history = db.prepare(query).all(...params);
+
+    // Parse JSON results
+    const parsedHistory = history.map(item => ({
+      ...item,
+      audit_result: item.ai_audit_result ? JSON.parse(item.ai_audit_result) : null
+    }));
+
+    res.json({
+      data: parsedHistory,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: history.length,
+        totalPages: Math.ceil(history.length / limit)
+      }
+    });
+  } catch (error) {
+    console.error('Get audit history error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
+// Approve reconciliation after AI audit
+router.post('/approve-reconciliation', authenticate, authorize('admin', 'finance'), async (req, res) => {
+  try {
+    const { reconciliation_id, notes } = req.body;
+
+    if (!reconciliation_id) {
+      return res.status(400).json({ error: '请提供对账单ID' });
+    }
+
+    const reconciliation = db.prepare('SELECT * FROM reconciliations WHERE id = ?').get(reconciliation_id);
+
+    if (!reconciliation) {
+      return res.status(404).json({ error: '对账单不存在' });
+    }
+
+    // Update reconciliation status
+    db.prepare(`
+      UPDATE reconciliations SET status = 'confirmed', updated_at = CURRENT_TIMESTAMP WHERE id = ?
+    `).run(reconciliation_id);
+
+    res.json({ message: '审批通过', status: 'confirmed' });
+  } catch (error) {
+    console.error('Approve reconciliation error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
+// Reject reconciliation after AI audit
+router.post('/reject-reconciliation', authenticate, authorize('admin', 'finance'), async (req, res) => {
+  try {
+    const { reconciliation_id, reason } = req.body;
+
+    if (!reconciliation_id) {
+      return res.status(400).json({ error: '请提供对账单ID' });
+    }
+
+    const reconciliation = db.prepare('SELECT * FROM reconciliations WHERE id = ?').get(reconciliation_id);
+
+    if (!reconciliation) {
+      return res.status(404).json({ error: '对账单不存在' });
+    }
+
+    // Update reconciliation status back to draft
+    db.prepare(`
+      UPDATE reconciliations SET status = 'draft', updated_at = CURRENT_TIMESTAMP WHERE id = ?
+    `).run(reconciliation_id);
+
+    res.json({ message: '已驳回', status: 'draft' });
+  } catch (error) {
+    console.error('Reject reconciliation error:', error);
+    res.status(500).json({ error: '服务器错误' });
   }
 });
 

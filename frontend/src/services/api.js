@@ -38,7 +38,9 @@ api.interceptors.response.use(
 export const authAPI = {
   login: (data) => api.post('/auth/login', data),
   logout: () => api.post('/auth/logout'),
-  getProfile: () => api.get('/auth/profile')
+  getProfile: () => api.get('/auth/profile'),
+  updateProfile: (data) => api.put('/auth/profile', data),
+  changePassword: (data) => api.post('/auth/change-password', data)
 };
 
 // Orders API
@@ -52,7 +54,9 @@ export const ordersAPI = {
   ship: (id, data) => api.post(`/orders/${id}/ship`, data),
   receive: (id) => api.post(`/orders/${id}/receive`),
   complete: (id) => api.post(`/orders/${id}/complete`),
-  cancel: (id) => api.post(`/orders/${id}/cancel`)
+  cancel: (id) => api.post(`/orders/${id}/cancel`),
+  export: (params) => api.get('/orders/export', { params }),
+  getTimeline: (id) => api.get(`/orders/${id}/timeline`)
 };
 
 // Suppliers API
@@ -63,7 +67,8 @@ export const suppliersAPI = {
   update: (id, data) => api.put(`/suppliers/${id}`, data),
   block: (id) => api.put(`/suppliers/${id}/block`),
   activate: (id) => api.put(`/suppliers/${id}/activate`),
-  updateRating: (id, data) => api.put(`/suppliers/${id}/rating`, data)
+  updateRating: (id, data) => api.put(`/suppliers/${id}/rating`, data),
+  export: (params) => api.get('/suppliers/export', { params })
 };
 
 // Inquiries API
@@ -90,9 +95,11 @@ export const reconciliationsAPI = {
   getAll: (params) => api.get('/reconciliations', { params }),
   getById: (id) => api.get(`/reconciliations/${id}`),
   create: (data) => api.post('/reconciliations', data),
+  update: (id, data) => api.put(`/reconciliations/${id}`, data),
   send: (id) => api.post(`/reconciliations/${id}/send`),
   confirm: (id) => api.post(`/reconciliations/${id}/confirm`),
-  markPaid: (id) => api.post(`/reconciliations/${id}/paid`)
+  markPaid: (id) => api.post(`/reconciliations/${id}/paid`),
+  export: (params) => api.get('/reconciliations/export', { params })
 };
 
 // Invoices API
@@ -110,7 +117,19 @@ export const aiAPI = {
   parseOrder: (data) => api.post('/ai/parse-order', data),
   polishInquiry: (data) => api.post('/ai/polish-inquiry', data),
   auditReconciliation: (data) => api.post('/ai/audit-reconciliation', data),
-  ocrInvoice: (data) => api.post('/ai/ocr-invoice', data)
+  ocrInvoice: (data) => api.post('/ai/ocr-invoice', data),
+  getAuditHistory: (params) => api.get('/ai/audit-history', { params }),
+  approveReconciliation: (data) => api.post('/ai/approve-reconciliation', data),
+  rejectReconciliation: (data) => api.post('/ai/reject-reconciliation', data)
+};
+
+// Notifications API
+export const notificationsAPI = {
+  getAll: (params) => api.get('/notifications', { params }),
+  getUnreadCount: () => api.get('/notifications/unread-count'),
+  markAsRead: (id) => api.put(`/notifications/${id}/read`),
+  markAllAsRead: () => api.put('/notifications/read-all'),
+  delete: (id) => api.delete(`/notifications/${id}`)
 };
 
 export default api;

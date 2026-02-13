@@ -151,6 +151,22 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_order_logs_order ON order_logs(order_id);
   CREATE INDEX IF NOT EXISTS idx_quotations_inquiry ON quotations(inquiry_id);
   CREATE INDEX IF NOT EXISTS idx_invoices_supplier ON invoices(supplier_id);
+
+  -- Notifications table
+  CREATE TABLE IF NOT EXISTS notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    content TEXT,
+    link VARCHAR(200),
+    read INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id);
+  CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(read);
 `);
 
 // Seed data

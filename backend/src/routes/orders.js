@@ -408,4 +408,92 @@ router.post('/import', authenticate, authorize('admin', 'purchaser'), (req, res)
   res.status(501).json({ error: 'Excel导入功能开发中' });
 });
 
+// Export orders
+router.get('/export', authenticate, (req, res) => {
+  try {
+    const { status, supplier_id, start_date, end_date, search } = req.query;
+
+    let query = `
+      SELECT o.*, s.name as supplier_name, m.name as material_name, m.code as material_code,
+             m.specification as material_spec, u.username as created_by_name
+      FROM orders o
+      JOIN suppliers s ON o.supplier_id = s.id
+      JOIN materials m ON o.material_id = m.id
+      LEFT JOIN users u ON o.created_by = u.id
+      WHERE 1=1
+    `;
+
+    const params = [];
+
+    // Filter by role
+    if (req.user.role === 'supplier') {
+      query += ' AND o.supplier_id = ?';
+      params.push(req.user.supplierId);
+    }
+
+    if (status) {
+      query += ' AND o.status = ?';
+      params.push(status);
+    }
+
+    if (supplier_id) {
+      query += ' AND o.supplier_id = ?';
+      params.push(supplier_id);
+    }
+
+    if (start_date) {
+      query += ' AND o.delivery_date >= ?';
+      params.push(start_date);
+    }
+
+    if (end_date) {
+      query += ' AND o.delivery_date <= ?';
+      params.push(end_date);
+    }
+
+    if (search) {
+      query += ' AND (o.order_no LIKE ? OR s.name LIKE ? OR m.name LIKE ?)';
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+    }
+
+    query += ' ORDER BY o.created_at DESC';
+
+    const orders = db.prepare(query).all(...params);
+
+    res.json({ data: orders });
+  } catch (error) {
+    console.error('Export orders error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
+// Get order timeline
+router.get('/:id/timeline', authenticate, (req, res) => {
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ error: '订单不存在' });
+    }
+
+    // Check access
+    if (req.user.role === 'supplier' && order.supplier_id !== req.user.supplierId) {
+      return res.status(403).json({ error: '权限不足' });
+    }
+
+    const timeline = db.prepare(`
+      SELECT ol.*, u.username as operator_name
+      FROM order_logs ol
+      LEFT JOIN users u ON ol.operator_id = u.id
+      WHERE ol.order_id = ?
+      ORDER BY ol.created_at ASC
+    `).all(req.params.id);
+
+    res.json({ timeline });
+  } catch (error) {
+    console.error('Get order timeline error:', error);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
 export default router;

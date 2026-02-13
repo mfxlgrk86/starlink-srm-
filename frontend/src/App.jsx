@@ -10,6 +10,12 @@ import Suppliers from './pages/suppliers/Suppliers';
 import SupplierDetail from './pages/suppliers/SupplierDetail';
 import Sourcing from './pages/sourcing/Sourcing';
 import Finance from './pages/finance/Finance';
+import Settings from './pages/settings/Settings';
+import ChangePassword from './pages/settings/ChangePassword';
+import Profile from './pages/settings/Profile';
+import Notifications from './pages/notifications/Notifications';
+import AuditReconciliation from './pages/ai/AuditReconciliation';
+import AuditHistory from './pages/ai/AuditHistory';
 import MobileLayout from './pages/mobile/MobileLayout';
 import MobileLogin from './pages/mobile/Login';
 import MobileDashboard from './pages/mobile/Dashboard';
@@ -51,6 +57,14 @@ function App() {
           <Route path="suppliers/:id" element={<SupplierDetail />} />
           <Route path="sourcing" element={<Sourcing />} />
           <Route path="finance" element={<Finance />} />
+          <Route path="settings" element={<Settings />}>
+            <Route index element={<Profile />} />
+            <Route path="password" element={<ChangePassword />} />
+          </Route>
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="finance/ai" element={<AuditReconciliation />} />
+          <Route path="finance/ai/:id" element={<AuditReconciliation />} />
+          <Route path="finance/ai-history" element={<AuditHistory />} />
         </Route>
 
         {/* 移动端路由 */}
