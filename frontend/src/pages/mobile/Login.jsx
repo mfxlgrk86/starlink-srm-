@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore } from '../../stores/authStore';
 
-const Login = () => {
+const MobileLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,7 +12,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate('/mobile');
     }
   }, [isAuthenticated, navigate]);
 
@@ -24,7 +24,7 @@ const Login = () => {
     const result = await login(username, password);
 
     if (result.success) {
-      navigate('/');
+      navigate('/mobile');
     } else {
       setError(result.error);
     }
@@ -33,10 +33,8 @@ const Login = () => {
   };
 
   const testAccounts = [
-    { username: 'admin', password: 'admin123', role: '管理员' },
-    { username: 'purchaser', password: 'purchase123', role: '采购员' },
     { username: 'huawei', password: 'huawei123', role: '供应商' },
-    { username: 'finance', password: 'finance123', role: '财务' }
+    { username: 'lixun', password: 'lixun123', role: '供应商' },
   ];
 
   const fillCredentials = (account) => {
@@ -44,34 +42,21 @@ const Login = () => {
     setPassword(account.password);
   };
 
-  // Icons
-  const UserIcon = ({ className }) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-    </svg>
-  );
-
-  const LockIcon = ({ className }) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-    </svg>
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo and Title */}
+      <div className="w-full max-w-sm">
+        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-3xl">S</span>
+          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
+            <span className="text-white font-bold text-2xl">S</span>
           </div>
-          <h1 className="text-3xl font-semibold text-gray-800 mb-2">星穹 SRM</h1>
-          <p className="text-gray-500">供应链协同平台</p>
+          <h1 className="text-2xl font-semibold text-gray-800 mb-1">星穹 SRM</h1>
+          <p className="text-gray-500 text-sm">供应商移动端</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <h2 className="text-xl font-medium text-center mb-6 text-gray-800">欢迎回来</h2>
+        <div className="bg-white rounded-2xl shadow-sm p-6">
+          <h2 className="text-lg font-medium text-center mb-6 text-gray-800">欢迎回来</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -80,7 +65,9 @@ const Login = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <UserIcon className="w-5 h-5 text-gray-400" />
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
                 </div>
                 <input
                   type="text"
@@ -99,7 +86,9 @@ const Login = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <LockIcon className="w-5 h-5 text-gray-400" />
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
                 </div>
                 <input
                   type="password"
@@ -154,13 +143,13 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Mobile Access */}
+        {/* PC Access */}
         <p className="text-center text-gray-400 text-sm mt-6">
-          移动端访问: <span className="text-indigo-600">/mobile</span>
+          PC端访问: <span className="text-indigo-600">localhost:5173</span>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default MobileLogin;

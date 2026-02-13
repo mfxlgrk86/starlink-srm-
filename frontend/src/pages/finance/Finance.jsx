@@ -88,31 +88,74 @@ const Finance = () => {
   const isFinance = user?.role === 'finance' || user?.role === 'admin';
   const isSupplier = user?.role === 'supplier';
 
+  // Stats
+  const stats = {
+    totalReconciliations: reconciliations.length,
+    pendingAmount: reconciliations.filter(r => ['draft', 'sent'].includes(r.status)).reduce((sum, r) => sum + Number(r.total_amount || 0), 0),
+    totalInvoices: invoices.length,
+    verifiedAmount: invoices.filter(i => i.status === 'verified').reduce((sum, i) => sum + Number(i.amount || 0), 0)
+  };
+
   return (
     <div className="space-y-4 animate-fadeIn">
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <h2 className="text-xl font-semibold">财务协同</h2>
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800">财务协同</h2>
+          <p className="text-sm text-gray-500 mt-1">管理对账单和发票</p>
+        </div>
         {isFinance && (
           <button
             onClick={() => setShowCreateReconciliation(true)}
-            className="btn-primary"
+            className="btn-primary flex items-center"
           >
-            + 创建对账单
+            <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            创建对账单
           </button>
         )}
       </div>
 
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="card p-4">
+          <div className="text-gray-500 text-sm">对账单总数</div>
+          <div className="text-2xl font-semibold text-gray-800 mt-1">{stats.totalReconciliations}</div>
+        </div>
+        <div className="card p-4">
+          <div className="text-gray-500 text-sm">待处理金额</div>
+          <div className="text-2xl font-semibold text-amber-600 mt-1">¥{stats.pendingAmount.toLocaleString()}</div>
+        </div>
+        <div className="card p-4">
+          <div className="text-gray-500 text-sm">发票总数</div>
+          <div className="text-2xl font-semibold text-gray-800 mt-1">{stats.totalInvoices}</div>
+        </div>
+        <div className="card p-4">
+          <div className="text-gray-500 text-sm">已验证金额</div>
+          <div className="text-2xl font-semibold text-emerald-600 mt-1">¥{stats.verifiedAmount.toLocaleString()}</div>
+        </div>
+      </div>
+
       {/* Tabs */}
-      <div className="flex gap-2 border-b">
+      <div className="flex gap-2 border-b border-gray-200">
         <button
           onClick={() => setActiveTab('reconciliations')}
-          className={`px-4 py-2 font-medium ${activeTab === 'reconciliations' ? 'border-b-2 border-apple-blue text-apple-blue' : 'text-gray-500'}`}
+          className={`px-4 py-2 font-medium text-sm transition-colors ${
+            activeTab === 'reconciliations'
+              ? 'text-gray-800 border-b-2 border-gray-800'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
         >
           对账管理
         </button>
         <button
           onClick={() => setActiveTab('invoices')}
-          className={`px-4 py-2 font-medium ${activeTab === 'invoices' ? 'border-b-2 border-apple-blue text-apple-blue' : 'text-gray-500'}`}
+          className={`px-4 py-2 font-medium text-sm transition-colors ${
+            activeTab === 'invoices'
+              ? 'text-gray-800 border-b-2 border-gray-800'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
         >
           发票管理
         </button>
@@ -126,37 +169,47 @@ const Finance = () => {
           ) : reconciliations.length > 0 ? (
             reconciliations.map((recon) => (
               <div key={recon.id} className="card">
-                <div className="flex justify-between items-start mb-3">
+                <div className="p-4 border-b bg-gray-50 flex justify-between items-start">
                   <div>
-                    <h3 className="font-medium">{recon.reconciliation_no}</h3>
+                    <h3 className="font-medium text-gray-800">{recon.reconciliation_no}</h3>
                     <p className="text-sm text-gray-500 mt-1">
                       供应商: {recon.supplier_name}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      期间: {recon.period_start} ~ {recon.period_end}
-                    </p>
-                    <p className="text-lg font-semibold text-green-600 mt-2">
-                      ¥{Number(recon.total_amount).toLocaleString()}
                     </p>
                   </div>
                   {getReconciliationStatusBadge(recon.status)}
                 </div>
-                {isFinance && recon.status === 'draft' && (
-                  <button
-                    onClick={() => handleSend(recon.id)}
-                    className="btn-primary text-sm mt-2"
-                  >
-                    发送给供应商
-                  </button>
-                )}
-                {isSupplier && recon.status === 'sent' && (
-                  <button
-                    onClick={() => handleSend(recon.id)}
-                    className="btn-primary text-sm mt-2"
-                  >
-                    确认对账单
-                  </button>
-                )}
+                <div className="p-4 space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">对账期间</span>
+                    <span className="text-gray-800">
+                      {recon.period_start} ~ {recon.period_end}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-gray-500 text-sm">金额</span>
+                    <span className="text-lg font-semibold text-gray-800">
+                      ¥{Number(recon.total_amount).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+                <div className="px-4 pb-4">
+                  {isFinance && recon.status === 'draft' && (
+                    <button
+                      onClick={() => handleSend(recon.id)}
+                      className="btn-primary text-sm w-full"
+                    >
+                      发送给供应商
+                    </button>
+                  )}
+                  {isSupplier && recon.status === 'sent' && (
+                    <button
+                      onClick={() => handleSend(recon.id)}
+                      className="btn-primary text-sm w-full"
+                    >
+                      确认对账单
+                    </button>
+                  )}
+                </div>
               </div>
             ))
           ) : (
@@ -188,16 +241,16 @@ const Finance = () => {
                 <tbody>
                   {invoices.map((invoice) => (
                     <tr key={invoice.id}>
-                      <td className="font-medium">{invoice.invoice_no}</td>
-                      <td>{invoice.supplier_name}</td>
-                      <td>¥{Number(invoice.amount).toLocaleString()}</td>
-                      <td>¥{Number(invoice.tax_amount || 0).toLocaleString()}</td>
+                      <td className="font-medium text-gray-800">{invoice.invoice_no}</td>
+                      <td className="text-gray-600">{invoice.supplier_name}</td>
+                      <td className="font-medium">¥{Number(invoice.amount).toLocaleString()}</td>
+                      <td className="text-gray-600">¥{Number(invoice.tax_amount || 0).toLocaleString()}</td>
                       <td>{getInvoiceStatusBadge(invoice.status)}</td>
                       <td>
                         {isFinance && invoice.status === 'pending' && (
                           <button
                             onClick={() => handleVerify(invoice.id)}
-                            className="text-apple-blue hover:underline"
+                            className="text-gray-800 hover:text-gray-600 font-medium text-sm"
                           >
                             验证
                           </button>
@@ -216,12 +269,12 @@ const Finance = () => {
         </div>
       )}
 
-      {/* Create Reconciliation Modal */}
+      {/* Create reconciliation Modal */}
       {showCreateReconciliation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold">创建对账单</h3>
+          <div className="bg-white rounded-2xl w-full max-w-lg shadow-xl">
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800">创建对账单</h3>
             </div>
             <form onSubmit={handleCreateReconciliation} className="p-6 space-y-4">
               <div>

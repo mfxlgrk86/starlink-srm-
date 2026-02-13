@@ -10,6 +10,13 @@ import Suppliers from './pages/suppliers/Suppliers';
 import SupplierDetail from './pages/suppliers/SupplierDetail';
 import Sourcing from './pages/sourcing/Sourcing';
 import Finance from './pages/finance/Finance';
+import MobileLayout from './pages/mobile/MobileLayout';
+import MobileLogin from './pages/mobile/Login';
+import MobileDashboard from './pages/mobile/Dashboard';
+import MobileOrders from './pages/mobile/Orders';
+import MobileOrderDetail from './pages/mobile/OrderDetail';
+import MobileInvoices from './pages/mobile/Invoices';
+import MobileReconciliations from './pages/mobile/Reconciliations';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -17,10 +24,17 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
+// Mobile Protected Route
+const MobileProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuthStore();
+  return isAuthenticated ? children : <Navigate to="/mobile/login" />;
+};
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* PC端路由 */}
         <Route path="/login" element={<Login />} />
         <Route
           path="/"
@@ -38,7 +52,24 @@ function App() {
           <Route path="sourcing" element={<Sourcing />} />
           <Route path="finance" element={<Finance />} />
         </Route>
-        <Route path="/mobile" element={<Navigate to="/" />} />
+
+        {/* 移动端路由 */}
+        <Route path="/mobile/login" element={<MobileLogin />} />
+        <Route
+          path="/mobile"
+          element={
+            <MobileProtectedRoute>
+              <MobileLayout />
+            </MobileProtectedRoute>
+          }
+        >
+          <Route index element={<MobileDashboard />} />
+          <Route path="orders" element={<MobileOrders />} />
+          <Route path="orders/:id" element={<MobileOrderDetail />} />
+          <Route path="invoices" element={<MobileInvoices />} />
+          <Route path="reconciliations" element={<MobileReconciliations />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
